@@ -19,6 +19,8 @@ ds2::CPUType Platform::GetCPUType() {
   return (sizeof(void *) == 8) ? kCPUTypeARM64 : kCPUTypeARM;
 #elif defined(ARCH_X86) || defined(ARCH_X86_64)
   return (sizeof(void *) == 8) ? kCPUTypeX86_64 : kCPUTypeI386;
+#elif defined(ARCH_MIPS) || defined(ARCH_MIPS64)
+  return (sizeof(void *) == 8) ? kCPUTypeMIPS64 : kCPUTypeMIPS;
 #else
 #error "Architecture not supported."
 #endif
@@ -35,6 +37,36 @@ ds2::CPUSubType Platform::GetCPUSubType() {
   return kCPUSubTypeARM_V7;
 #endif
 #endif // ARCH_ARM
+
+#if defined(ARCH_MIPS) || defined(ARCH_MIPS64)
+  // Detect MIPS architecture version based on compiler macros
+#if defined(_MIPS_ARCH_MIPS64R6) || defined(__mips_isa_rev) && __mips_isa_rev >= 6
+  return (sizeof(void *) == 8) ? kCPUSubTypeMIPS64_R6 : kCPUSubTypeMIPS32_R6;
+#elif defined(_MIPS_ARCH_MIPS64R5) || defined(__mips_isa_rev) && __mips_isa_rev == 5
+  return (sizeof(void *) == 8) ? kCPUSubTypeMIPS64_R5 : kCPUSubTypeMIPS32_R5;
+#elif defined(_MIPS_ARCH_MIPS64R3) || defined(__mips_isa_rev) && __mips_isa_rev == 3
+  return (sizeof(void *) == 8) ? kCPUSubTypeMIPS64_R3 : kCPUSubTypeMIPS32_R3;
+#elif defined(_MIPS_ARCH_MIPS64R2) || defined(_MIPS_ARCH_MIPS32R2) || \
+    (defined(__mips_isa_rev) && __mips_isa_rev == 2)
+  return (sizeof(void *) == 8) ? kCPUSubTypeMIPS64_R2 : kCPUSubTypeMIPS32_R2;
+#elif defined(_MIPS_ARCH_MIPS64) || defined(_MIPS_ARCH_MIPS32) || \
+    (defined(__mips_isa_rev) && __mips_isa_rev == 1)
+  return (sizeof(void *) == 8) ? kCPUSubTypeMIPS64_R1 : kCPUSubTypeMIPS32_R1;
+#elif defined(_MIPS_ARCH_MIPS5) || (defined(_MIPS_ISA) && _MIPS_ISA == _MIPS_ISA_MIPS5)
+  return kCPUSubTypeMIPS_R16000;
+#elif defined(_MIPS_ARCH_MIPS4) || (defined(_MIPS_ISA) && _MIPS_ISA == _MIPS_ISA_MIPS4)
+  return kCPUSubTypeMIPS_R10000;
+#elif defined(_MIPS_ARCH_MIPS3) || (defined(_MIPS_ISA) && _MIPS_ISA == _MIPS_ISA_MIPS3)
+  return kCPUSubTypeMIPS_R4000;
+#elif defined(_MIPS_ARCH_MIPS2) || (defined(_MIPS_ISA) && _MIPS_ISA == _MIPS_ISA_MIPS2)
+  return kCPUSubTypeMIPS_R6000;
+#elif defined(_MIPS_ARCH_MIPS1) || (defined(_MIPS_ISA) && _MIPS_ISA == _MIPS_ISA_MIPS1)
+  return kCPUSubTypeMIPS_R3000;
+#else
+  return kCPUSubTypeMIPS_ALL;
+#endif
+#endif // ARCH_MIPS
+
   return kCPUSubTypeInvalid;
 }
 

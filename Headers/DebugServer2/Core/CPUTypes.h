@@ -144,13 +144,53 @@ enum CPUSubType {
   //
 
   kCPUSubTypeMIPS_ALL = 0,
-  kCPUSubTypeMIPS_R2300 = 1,
-  kCPUSubTypeMIPS_R2600 = 2,
-  kCPUSubTypeMIPS_R2800 = 3,
-  kCPUSubTypeMIPS_R2000 = 4,
-  kCPUSubTypeMIPS_R2000a = 5,
+
+  // MIPS ISA I (R2000 series, R3000 series)
+  kCPUSubTypeMIPS_R2000 = 1,
+  kCPUSubTypeMIPS_R2000a = 2,
+  kCPUSubTypeMIPS_R2300 = 3,
+  kCPUSubTypeMIPS_R2600 = 4,
+  kCPUSubTypeMIPS_R2800 = 5,
   kCPUSubTypeMIPS_R3000 = 6,
   kCPUSubTypeMIPS_R3000a = 7,
+
+  // MIPS ISA II (R6000 series)
+  kCPUSubTypeMIPS_R6000 = 8,
+
+  // MIPS ISA III (R4000 series)
+  kCPUSubTypeMIPS_R4000 = 9,
+  kCPUSubTypeMIPS_R4200 = 10,
+  kCPUSubTypeMIPS_R4400 = 11,
+  kCPUSubTypeMIPS_R4600 = 12,
+
+  // MIPS ISA IV (R8000 series, R10000 series)
+  kCPUSubTypeMIPS_R8000 = 13,
+  kCPUSubTypeMIPS_R10000 = 14,
+  kCPUSubTypeMIPS_R12000 = 15,
+  kCPUSubTypeMIPS_R14000 = 16,
+
+  // MIPS ISA V (rarely implemented)
+  kCPUSubTypeMIPS_R16000 = 17,
+
+  // MIPS32/64 Release 1
+  kCPUSubTypeMIPS32_R1 = 18,
+  kCPUSubTypeMIPS64_R1 = 19,
+
+  // MIPS32/64 Release 2
+  kCPUSubTypeMIPS32_R2 = 20,
+  kCPUSubTypeMIPS64_R2 = 21,
+
+  // MIPS32/64 Release 3 (microMIPS)
+  kCPUSubTypeMIPS32_R3 = 22,
+  kCPUSubTypeMIPS64_R3 = 23,
+
+  // MIPS32/64 Release 5
+  kCPUSubTypeMIPS32_R5 = 24,
+  kCPUSubTypeMIPS64_R5 = 25,
+
+  // MIPS32/64 Release 6
+  kCPUSubTypeMIPS32_R6 = 26,
+  kCPUSubTypeMIPS64_R6 = 27,
 
   //
   // kCPUTypeMC98000 (PowerPC)

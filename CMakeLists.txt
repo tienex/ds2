@@ -33,6 +33,10 @@ elseif (ARCH_NAME MATCHES "I[3-6]86")
   set(ARCH_NAME "X86")
 elseif (ARCH_NAME MATCHES "AMD64")
   set(ARCH_NAME "X86_64")
+elseif (ARCH_NAME MATCHES "^MIPS64")
+  set(ARCH_NAME "MIPS64")
+elseif (ARCH_NAME MATCHES "^MIPS")
+  set(ARCH_NAME "MIPS")
 endif ()
 
 if ("${OS_NAME}" MATCHES "Linux" OR "${OS_NAME}" MATCHES "Android")
@@ -90,6 +94,8 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     set(ARCH_NAME "X86")
   elseif ("${CMAKE_CXX_COMPILER_ARCHITECTURE_ID}" MATCHES "ARM")
     set(ARCH_NAME "ARM")
+  elseif ("${CMAKE_CXX_COMPILER_ARCHITECTURE_ID}" MATCHES "MIPS")
+    set(ARCH_NAME "MIPS")
   endif()
 endif ()
 
@@ -116,6 +122,15 @@ set(ARCHITECTURE_X86_SOURCES
 set(ARCHITECTURE_X86_64_SOURCES
     ${ARCHITECTURE_X86_SOURCES}
     Sources/Architecture/X86_64/RegistersDescriptors.cpp
+    )
+
+set(ARCHITECTURE_MIPS_SOURCES
+    Sources/Architecture/MIPS/RegistersDescriptors.cpp
+    )
+
+set(ARCHITECTURE_MIPS64_SOURCES
+    ${ARCHITECTURE_MIPS_SOURCES}
+    Sources/Architecture/MIPS64/RegistersDescriptors.cpp
     )
 
 set(HOST_COMMON_SOURCES
