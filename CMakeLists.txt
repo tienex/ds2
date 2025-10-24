@@ -99,7 +99,14 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
   elseif ("${CMAKE_CXX_COMPILER_ARCHITECTURE_ID}" MATCHES "MIPS")
     set(ARCH_NAME "MIPS")
   elseif ("${CMAKE_CXX_COMPILER_ARCHITECTURE_ID}" MATCHES "ALPHA")
-    set(ARCH_NAME "ALPHA32") # Windows NT used 32-bit Alpha variant
+    # Windows NT (3.51-4.0) used 32-bit Alpha (ALPHA32)
+    # Windows 2000 AXP64 (never released) would use 64-bit Alpha (ALPHA)
+    # Detect based on pointer size or explicit definition
+    if (CMAKE_SIZEOF_VOID_P EQUAL 8)
+      set(ARCH_NAME "ALPHA")   # 64-bit Alpha (Windows 2000 AXP64)
+    else()
+      set(ARCH_NAME "ALPHA32") # 32-bit Alpha (Windows NT)
+    endif()
   endif()
 endif ()
 
@@ -274,6 +281,11 @@ set(TARGET_Windows_SOURCES
     Sources/Target/Windows/Thread.cpp
     Sources/Target/Windows/${ARCH_NAME}/Thread${ARCH_NAME}.cpp
     )
+
+# Windows Alpha64 needs process-specific implementation for memory allocation
+if (ARCH_NAME STREQUAL "ALPHA")
+  list(APPEND TARGET_Windows_SOURCES Sources/Target/Windows/Alpha/ProcessAlpha.cpp)
+endif()
 
 set(GDBREMOTE_SOURCES
     Sources/GDBRemote/DebugSessionImpl.cpp
