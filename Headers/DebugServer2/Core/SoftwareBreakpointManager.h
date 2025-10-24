@@ -46,7 +46,7 @@ protected:
                     Mode mode) const override;
   size_t chooseBreakpointSize() const override;
 
-#if defined(ARCH_ARM) || defined(ARCH_ARM64)
+#if defined(ARCH_ARM) || defined(ARCH_ARM64) || defined(ARCH_MIPS) || defined(ARCH_MIPS64)
 public:
   virtual void
   enumerate(std::function<void(Site const &)> const &cb) const override;

@@ -126,11 +126,13 @@ set(ARCHITECTURE_X86_64_SOURCES
 
 set(ARCHITECTURE_MIPS_SOURCES
     Sources/Architecture/MIPS/RegistersDescriptors.cpp
+    Sources/Architecture/MIPS/SoftwareSingleStep.cpp
     )
 
 set(ARCHITECTURE_MIPS64_SOURCES
     ${ARCHITECTURE_MIPS_SOURCES}
     Sources/Architecture/MIPS64/RegistersDescriptors.cpp
+    Sources/Architecture/MIPS64/SoftwareSingleStep.cpp
     )
 
 set(HOST_COMMON_SOURCES
@@ -302,8 +304,15 @@ set(CORE_X86_SOURCES
     Sources/Core/X86/SoftwareBreakpointManager.cpp
     )
 
+set(CORE_MIPS_SOURCES
+    Sources/Core/MIPS/SoftwareBreakpointManager.cpp
+    )
+
 set(CORE_ARM64_SOURCES ${CORE_ARM_SOURCES})
 set(CORE_X86_64_SOURCES ${CORE_X86_SOURCES})
+set(CORE_MIPS64_SOURCES
+    Sources/Core/MIPS64/SoftwareBreakpointManager.cpp
+    )
 
 set(HOST_SOURCES ${HOST_COMMON_SOURCES} ${HOST_${OS_NAME}_SOURCES})
 set(TARGET_SOURCES ${TARGET_COMMON_SOURCES} ${TARGET_${OS_NAME}_SOURCES})
