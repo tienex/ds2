@@ -7,7 +7,7 @@
 // source tree. An additional grant of patent rights can be found in the
 // PATENTS file in the same directory.
 //
-// Unified Mach implementation for Darwin (XNU Mach) and GNU/Hurd (GNU Mach)
+// Unified Mach implementation for Darwin (XNU Mach), GNU/Hurd (GNU Mach), and OSF/1
 //
 
 #include "DebugServer2/Host/Mach/Mach.h"
@@ -30,6 +30,10 @@
 #include <mach.h>
 #include <mach/mach_traps.h>
 #include <mach/mach_interface.h>
+#elif defined(__osf__) || defined(__digital__)
+#include <mach.h>
+#include <mach/mach_interface.h>
+#include <mach/mach_types.h>
 #endif
 
 #include <sys/types.h>
@@ -92,8 +96,8 @@ ErrorCode MachInterface::readMemory(ProcessThreadId const &ptid,
   if (count != nullptr) {
     *count = curr_bytes_read;
   }
-#elif defined(__GNU__)
-  // GNU/Hurd: Use vm_read (returns data that needs to be copied)
+#elif defined(__GNU__) || defined(__osf__) || defined(__digital__)
+  // GNU/Hurd and OSF/1: Use vm_read (returns data that needs to be copied)
   vm_offset_t data;
   mach_msg_type_number_t data_count;
   kern_return_t kret = vm_read(task, (vm_address_t)address.value(), length,
@@ -165,8 +169,8 @@ ErrorCode MachInterface::writeMemory(ProcessThreadId const &ptid,
     error = kErrorUnknown;
   }
 
-#elif defined(__GNU__)
-  // GNU/Hurd: Use vm_* APIs with 32-bit addressing
+#elif defined(__GNU__) || defined(__osf__) || defined(__digital__)
+  // GNU/Hurd and OSF/1: Use vm_* APIs with 32-bit addressing
   vm_address_t region_start = (vm_address_t)address.value();
   vm_size_t region_size;
   vm_region_basic_info_data_t region_info;
@@ -235,8 +239,8 @@ ErrorCode MachInterface::resume(ProcessThreadId const &ptid,
 #if defined(__APPLE__)
   // Darwin: resume not directly supported via Mach
   return kErrorUnsupported;
-#elif defined(__GNU__)
-  // GNU/Hurd: Use thread_resume
+#elif defined(__GNU__) || defined(__osf__) || defined(__digital__)
+  // GNU/Hurd and OSF/1: Use thread_resume
   thread_t thread = getMachThread(ptid);
   if (thread == THREAD_NULL) {
     return kErrorProcessNotFound;
@@ -286,8 +290,8 @@ ErrorCode MachInterface::getProcessMemoryRegion(ProcessId pid,
   if ((regionInfo.protection & VM_PROT_EXECUTE) == VM_PROT_EXECUTE)
     region.protection |= ds2::kProtectionExecute;
 
-#elif defined(__GNU__)
-  // GNU/Hurd: Use vm_region with basic info
+#elif defined(__GNU__) || defined(__osf__) || defined(__digital__)
+  // GNU/Hurd and OSF/1: Use vm_region with basic info
   vm_region_basic_info_data_t region_info;
   mach_msg_type_number_t count = VM_REGION_BASIC_INFO_COUNT;
   vm_address_t start = (vm_address_t)address.value();
@@ -374,8 +378,8 @@ MachInterface::getThreadIdentifierInfo(ProcessThreadId const &ptid,
   return kSuccess;
 }
 
-#elif defined(__GNU__)
-// GNU/Hurd-specific implementations
+#elif defined(__GNU__) || defined(__osf__) || defined(__digital__)
+// GNU/Hurd and OSF/1-specific implementations
 
 ErrorCode MachInterface::getThreadInfo(ProcessThreadId const &ptid, void *info) {
   thread_t thread = getMachThread(ptid);

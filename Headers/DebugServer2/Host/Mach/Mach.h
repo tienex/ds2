@@ -25,6 +25,11 @@
 #include <mach.h>
 #include <mach/mach_traps.h>
 #include <mach/mach_interface.h>
+#elif defined(__osf__) || defined(__digital__)
+// OSF/1 (Digital UNIX / Tru64) - Mach 2.5/3.0
+#include <mach.h>
+#include <mach/mach_interface.h>
+#include <mach/mach_types.h>
 #endif
 
 #include <sys/types.h>
@@ -76,6 +81,9 @@ public:
                                     thread_identifier_info_data_t *threadID);
 #elif defined(__GNU__)
   // GNU/Hurd-specific APIs
+  ErrorCode getThreadInfo(ProcessThreadId const &tid, void *info);
+#elif defined(__osf__) || defined(__digital__)
+  // OSF/1-specific APIs
   ErrorCode getThreadInfo(ProcessThreadId const &tid, void *info);
 #endif
 

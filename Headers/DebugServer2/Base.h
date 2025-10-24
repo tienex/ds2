@@ -46,11 +46,13 @@ typedef SSIZE_T ssize_t;
 #define OS_DARWIN
 #elif defined(__GNU__)
 #define OS_HURD
+#elif defined(__osf__) || defined(__digital__) || defined(__alpha)
+#define OS_OSF1
 #else
 #error "Target not supported."
 #endif
 
-#if defined(OS_LINUX) || defined(OS_FREEBSD) || defined(OS_DARWIN) || defined(OS_HURD)
+#if defined(OS_LINUX) || defined(OS_FREEBSD) || defined(OS_DARWIN) || defined(OS_HURD) || defined(OS_OSF1)
 #define OS_POSIX
 #endif
 
@@ -78,6 +80,12 @@ typedef SSIZE_T ssize_t;
 #elif defined(__x86_64__) || defined(_M_AMD64)
 #define ARCH_X86_64
 #define BITSIZE_64
+#elif defined(__mips64) || defined(__mips64__) || defined(_MIPS_ARCH_MIPS64)
+#define ARCH_MIPS64
+#define BITSIZE_64
+#elif defined(__mips__) || defined(__mips) || defined(_MIPS_ARCH)
+#define ARCH_MIPS
+#define BITSIZE_32
 #else
 #error "Architecture not supported."
 #endif

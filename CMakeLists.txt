@@ -183,6 +183,12 @@ set(HOST_Hurd_SOURCES
     Sources/Host/Hurd/${ARCH_NAME}/Mach${ARCH_NAME}.cpp
     )
 
+set(HOST_OSF1_SOURCES
+    ${HOST_POSIX_SOURCES}
+    Sources/Host/Mach/Mach.cpp
+    Sources/Host/OSF1/${ARCH_NAME}/Mach${ARCH_NAME}.cpp
+    )
+
 set(HOST_Windows_SOURCES
     Sources/Host/Windows/File.cpp
     Sources/Host/Windows/Platform.cpp
@@ -237,6 +243,14 @@ set(TARGET_Hurd_SOURCES
     Sources/Target/Hurd/Process.cpp
     Sources/Target/Hurd/${ARCH_NAME}/Process${ARCH_NAME}.cpp
     Sources/Target/Hurd/Thread.cpp
+    )
+
+set(TARGET_OSF1_SOURCES
+    ${TARGET_POSIX_ELF_SOURCES}
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/OSF1/Process.cpp
+    Sources/Target/OSF1/${ARCH_NAME}/Process${ARCH_NAME}.cpp
+    Sources/Target/OSF1/Thread.cpp
     )
 
 set(TARGET_Windows_SOURCES
