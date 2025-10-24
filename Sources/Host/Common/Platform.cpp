@@ -82,6 +82,107 @@ ds2::Endian Platform::GetEndian() {
 #endif
 }
 
+uint32_t Platform::GetCPUFeatures() {
+  uint32_t features = 0;
+
+#if defined(ARCH_MIPS) || defined(ARCH_MIPS64)
+  // Detect MIPS ISA extensions via compiler macros
+
+  // Code compression extensions
+#if defined(__mips16)
+  features |= kCPUFeatureMIPS16;
+#endif
+
+#if defined(__mips_micromips) || defined(_MIPS_ARCH_MICROMIPS)
+  features |= kCPUFeatureMicroMIPS;
+#endif
+
+  // DSP ASE extensions
+#if defined(__mips_dsp)
+  features |= kCPUFeatureMIPS_DSP;
+#endif
+
+#if defined(__mips_dspr2)
+  features |= kCPUFeatureMIPS_DSP2;
+#endif
+
+#if defined(__mips_dspr3)
+  features |= kCPUFeatureMIPS_DSP3;
+#endif
+
+  // SIMD extensions
+#if defined(__mips_msa)
+  features |= kCPUFeatureMIPS_MSA;
+#endif
+
+#if defined(__mips_mdmx)
+  features |= kCPUFeatureMIPS_MDMX;
+#endif
+
+#if defined(__mips_3d)
+  features |= kCPUFeatureMIPS_3D;
+#endif
+
+  // Multi-threading and virtualization
+#if defined(__mips_mt)
+  features |= kCPUFeatureMIPS_MT;
+#endif
+
+#if defined(__mips_vz)
+  features |= kCPUFeatureMIPS_VZ;
+#endif
+
+  // Memory management extensions
+#if defined(__mips_eva)
+  features |= kCPUFeatureMIPS_EVA;
+#endif
+
+  // SmartMIPS
+#if defined(__mips_smartmips)
+  features |= kCPUFeatureMIPS_SmartMIPS;
+#endif
+
+  // Paired-single FPU
+#if defined(__mips_paired_single)
+  features |= kCPUFeatureMIPS_PairedSingle;
+#endif
+
+  // CRC32
+#if defined(__mips_crc)
+  features |= kCPUFeatureMIPS_CRC32;
+#endif
+
+  // Global Invalidate
+#if defined(__mips_ginv)
+  features |= kCPUFeatureMIPS_GINV;
+#endif
+
+#endif // ARCH_MIPS
+
+#if defined(ARCH_ARM)
+  // ARM Thumb mode detection
+#if defined(__thumb__) || defined(__thumb2__)
+  features |= kCPUFeatureARM_Thumb;
+#endif
+
+#if defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
+  features |= kCPUFeatureARM_Thumb2;
+#endif
+
+  // ARM NEON
+#if defined(__ARM_NEON) || defined(__ARM_NEON__)
+  features |= kCPUFeatureARM_NEON;
+#endif
+
+  // ARM VFP
+#if defined(__VFP_FP__) || defined(__ARM_FP)
+  features |= kCPUFeatureARM_VFP;
+#endif
+#endif // ARCH_ARM
+
+  return features;
+}
+
 size_t Platform::GetPointerSize() { return sizeof(void *); }
 } // namespace Host
 } // namespace ds2

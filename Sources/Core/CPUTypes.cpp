@@ -161,4 +161,54 @@ char const *GetArchName(CPUType type, CPUSubType subtype, Endian endian) {
   }
   return GetArchName(type, subtype);
 }
+
+char const *GetCPUFeatureName(CPUFeatureFlags feature) {
+  switch (feature) {
+  // MIPS features
+  case kCPUFeatureMIPS16:
+    return "MIPS16e";
+  case kCPUFeatureMicroMIPS:
+    return "microMIPS";
+  case kCPUFeatureMIPS_DSP:
+    return "DSP ASE";
+  case kCPUFeatureMIPS_DSP2:
+    return "DSP ASE R2";
+  case kCPUFeatureMIPS_DSP3:
+    return "DSP ASE R3";
+  case kCPUFeatureMIPS_MSA:
+    return "MSA";
+  case kCPUFeatureMIPS_MDMX:
+    return "MDMX";
+  case kCPUFeatureMIPS_3D:
+    return "MIPS-3D";
+  case kCPUFeatureMIPS_MT:
+    return "Multi-Threading";
+  case kCPUFeatureMIPS_VZ:
+    return "Virtualization";
+  case kCPUFeatureMIPS_EVA:
+    return "EVA";
+  case kCPUFeatureMIPS_SmartMIPS:
+    return "SmartMIPS";
+  case kCPUFeatureMIPS_PairedSingle:
+    return "Paired-Single";
+  case kCPUFeatureMIPS_CRC32:
+    return "CRC32";
+  case kCPUFeatureMIPS_GINV:
+    return "GINV";
+
+  // ARM features
+  case kCPUFeatureARM_Thumb:
+    return "Thumb";
+  case kCPUFeatureARM_Thumb2:
+    return "Thumb-2";
+  case kCPUFeatureARM_NEON:
+    return "NEON";
+  case kCPUFeatureARM_VFP:
+    return "VFP";
+
+  default:
+    break;
+  }
+  return "Unknown";
+}
 } // namespace ds2

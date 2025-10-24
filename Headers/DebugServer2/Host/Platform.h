@@ -29,6 +29,7 @@ public:
   static CPUType GetCPUType();
   static CPUSubType GetCPUSubType();
   static Endian GetEndian();
+  static uint32_t GetCPUFeatures();
   static size_t GetPointerSize();
   static size_t GetPageSize();
 

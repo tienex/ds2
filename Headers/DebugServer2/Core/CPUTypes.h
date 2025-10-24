@@ -22,6 +22,41 @@ namespace ds2 {
 enum { kCPUArchABI64 = 0x01000000U };
 
 //
+// CPU Feature Flags (for ISA extensions)
+// Used as bitmasks to track architecture-specific extensions
+//
+
+enum CPUFeatureFlags {
+  // MIPS Features
+  kCPUFeatureMIPS16 = (1 << 0),         // MIPS16e code compression
+  kCPUFeatureMicroMIPS = (1 << 1),      // microMIPS code compression
+  kCPUFeatureMIPS_DSP = (1 << 2),       // DSP ASE
+  kCPUFeatureMIPS_DSP2 = (1 << 3),      // DSP ASE Revision 2
+  kCPUFeatureMIPS_DSP3 = (1 << 4),      // DSP ASE Revision 3
+  kCPUFeatureMIPS_MSA = (1 << 5),       // MIPS SIMD Architecture
+  kCPUFeatureMIPS_MDMX = (1 << 6),      // MIPS Digital Media Extension
+  kCPUFeatureMIPS_3D = (1 << 7),        // MIPS-3D ASE
+  kCPUFeatureMIPS_MT = (1 << 8),        // Multi-Threading ASE
+  kCPUFeatureMIPS_VZ = (1 << 9),        // Virtualization ASE
+  kCPUFeatureMIPS_EVA = (1 << 10),      // Enhanced Virtual Addressing
+  kCPUFeatureMIPS_SmartMIPS = (1 << 11), // SmartMIPS ASE
+  kCPUFeatureMIPS_PairedSingle = (1 << 12), // Paired-single FPU
+  kCPUFeatureMIPS_CRC32 = (1 << 13),    // CRC32 instructions
+  kCPUFeatureMIPS_GINV = (1 << 14),     // Global Invalidate
+
+  // ARM Features (for future expansion)
+  kCPUFeatureARM_Thumb = (1 << 16),     // ARM Thumb mode
+  kCPUFeatureARM_Thumb2 = (1 << 17),    // ARM Thumb-2
+  kCPUFeatureARM_NEON = (1 << 18),      // ARM NEON SIMD
+  kCPUFeatureARM_VFP = (1 << 19),       // ARM VFP floating point
+
+  // Feature collections
+  kCPUFeatureMIPS_AllDSP = (kCPUFeatureMIPS_DSP | kCPUFeatureMIPS_DSP2 | kCPUFeatureMIPS_DSP3),
+  kCPUFeatureMIPS_CodeCompression = (kCPUFeatureMIPS16 | kCPUFeatureMicroMIPS),
+  kCPUFeatureMIPS_SIMD = (kCPUFeatureMIPS_MSA | kCPUFeatureMIPS_MDMX | kCPUFeatureMIPS_3D)
+};
+
+//
 // CPU Types
 //
 
@@ -276,7 +311,29 @@ static inline bool CPUTypeIs64Bit(CPUType type) {
   return ((type & kCPUArchABI64) != 0 || type == kCPUTypeALPHA);
 }
 
+// CPU Feature helpers
+static inline bool HasCPUFeature(uint32_t features, CPUFeatureFlags flag) {
+  return (features & flag) != 0;
+}
+
+static inline bool IsMIPS16Enabled(uint32_t features) {
+  return HasCPUFeature(features, kCPUFeatureMIPS16);
+}
+
+static inline bool IsMicroMIPSEnabled(uint32_t features) {
+  return HasCPUFeature(features, kCPUFeatureMicroMIPS);
+}
+
+static inline bool HasMIPSDSP(uint32_t features) {
+  return HasCPUFeature(features, kCPUFeatureMIPS_AllDSP);
+}
+
+static inline bool HasMIPSSIMD(uint32_t features) {
+  return HasCPUFeature(features, kCPUFeatureMIPS_SIMD);
+}
+
 char const *GetCPUTypeName(CPUType type);
 char const *GetArchName(CPUType type, CPUSubType subtype);
 char const *GetArchName(CPUType type, CPUSubType subtype, Endian endian);
+char const *GetCPUFeatureName(CPUFeatureFlags feature);
 } // namespace ds2
