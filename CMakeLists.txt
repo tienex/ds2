@@ -164,7 +164,7 @@ set(HOST_Darwin_SOURCES
     Sources/Host/Darwin/LibProc.cpp
     Sources/Host/Darwin/Platform.cpp
     Sources/Host/Darwin/PTrace.cpp
-    Sources/Host/Darwin/Mach.cpp
+    Sources/Host/Mach/Mach.cpp
     Sources/Host/Darwin/${ARCH_NAME}/Mach${ARCH_NAME}.cpp
     Sources/Host/Darwin/${ARCH_NAME}/PTrace${ARCH_NAME}.cpp
     )
@@ -179,7 +179,7 @@ set(HOST_FreeBSD_SOURCES
 
 set(HOST_Hurd_SOURCES
     ${HOST_POSIX_SOURCES}
-    Sources/Host/Hurd/Mach.cpp
+    Sources/Host/Mach/Mach.cpp
     Sources/Host/Hurd/${ARCH_NAME}/Mach${ARCH_NAME}.cpp
     )
 

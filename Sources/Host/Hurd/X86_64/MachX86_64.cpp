@@ -10,7 +10,7 @@
 // GNU/Hurd X86_64 Mach CPU state - adapted from Darwin
 //
 
-#include "DebugServer2/Host/Hurd/Mach.h"
+#include "DebugServer2/Host/Mach/Mach.h"
 #include "DebugServer2/Host/Platform.h"
 #include "DebugServer2/Utils/Log.h"
 
@@ -21,9 +21,9 @@
 
 namespace ds2 {
 namespace Host {
-namespace Hurd {
+namespace Mach {
 
-ErrorCode Mach::readCPUState(ProcessThreadId const &ptid,
+ErrorCode MachInterface::readCPUState(ProcessThreadId const &ptid,
                              ProcessInfo const &pinfo,
                              Architecture::CPUState &state) {
   if (!ptid.valid()) {
@@ -76,7 +76,7 @@ ErrorCode Mach::readCPUState(ProcessThreadId const &ptid,
   return kSuccess;
 }
 
-ErrorCode Mach::writeCPUState(ProcessThreadId const &ptid,
+ErrorCode MachInterface::writeCPUState(ProcessThreadId const &ptid,
                               ProcessInfo const &pinfo,
                               Architecture::CPUState const &state) {
   if (!ptid.valid()) {
@@ -126,6 +126,6 @@ ErrorCode Mach::writeCPUState(ProcessThreadId const &ptid,
   return kSuccess;
 }
 
-} // namespace Hurd
+} // namespace Mach
 } // namespace Host
 } // namespace ds2
