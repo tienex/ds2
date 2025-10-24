@@ -521,6 +521,60 @@
                 "gdb-group"      : "float",
                 "gdb-reg-number" : 58
             }
+        },
+
+        "vfp-extended" : {
+            "*" : {
+                "bit-size"       : 32,
+                "encoding"       : "int",
+                "format"         : "hex",
+                "gdb-group"      : "float",
+                "no-gdb-reg-number" : true
+            },
+
+            "fpexc" : {
+                "gdb-reg-number" : 59
+            },
+            "fpsid" : {
+                "gdb-reg-number" : 60
+            }
+        },
+
+        "neon-features" : {
+            "*" : {
+                "bit-size"       : 32,
+                "encoding"       : "int",
+                "format"         : "hex",
+                "gdb-group"      : "vector",
+                "no-gdb-reg-number" : true
+            },
+
+            "mvfr0" : {
+                "gdb-reg-number" : 61
+            },
+            "mvfr1" : {
+                "gdb-reg-number" : 62
+            },
+            "mvfr2" : {
+                "gdb-reg-number" : 63
+            }
+        },
+
+        "system-regs" : {
+            "*" : {
+                "bit-size"       : 32,
+                "encoding"       : "int",
+                "format"         : "hex",
+                "gdb-group"      : "system",
+                "no-gdb-reg-number" : true
+            },
+
+            "tpidruro" : {
+                "gdb-reg-number" : 64
+            },
+            "tpidrurw" : {
+                "gdb-reg-number" : 65
+            }
         }
     },
 
@@ -541,11 +595,25 @@
                 "identifier" : "org.gnu.gdb.arm.vfp",
                 "contents"   : [
                     "register-sets:vfp-double",
-                    "register-sets:fpscr"
+                    "register-sets:fpscr",
+                    "register-sets:vfp-extended"
                 ]
             },
             {
-                "identifier" : "org.gnu.gdb.arm.neon"
+                "indexed"    : false,
+                "filename"   : "arm-neon.xml",
+                "identifier" : "org.gnu.gdb.arm.neon",
+                "contents"   : [
+                    "register-sets:neon-features"
+                ]
+            },
+            {
+                "indexed"    : false,
+                "filename"   : "arm-system.xml",
+                "identifier" : "org.gnu.gdb.arm.system",
+                "contents"   : [
+                    "register-sets:system-regs"
+                ]
             }
         ]
     },
@@ -557,7 +625,15 @@
         },
         {
             "description" : "VFP Registers",
-            "sets"        : [ "vfp-single", "vfp-double", "vfp-quad", "fpscr" ]
+            "sets"        : [ "vfp-single", "vfp-double", "vfp-quad", "fpscr", "vfp-extended" ]
+        },
+        {
+            "description" : "NEON Registers",
+            "sets"        : [ "neon-features" ]
+        },
+        {
+            "description" : "System Registers",
+            "sets"        : [ "system-regs" ]
         }
     ]
 }

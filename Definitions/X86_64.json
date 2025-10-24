@@ -569,6 +569,207 @@
             }
         },
 
+        "avx512-regs" : {
+            "*" : {
+                "bit-size"                : 512,
+                "encoding"                : "int",
+                "format"                  : "vector",
+
+                "base-gdb-reg-number"     : 58,
+                "no-gdb-reg-number"       : true,
+
+                "referencing-sets"        : [ "avx-regs", "sse-regs" ]
+            },
+
+            "zmm0"  : { "invalidate-registers" : [ "zmm0", "ymm0", "xmm0" ] },
+            "zmm1"  : { "invalidate-registers" : [ "zmm1", "ymm1", "xmm1" ] },
+            "zmm2"  : { "invalidate-registers" : [ "zmm2", "ymm2", "xmm2" ] },
+            "zmm3"  : { "invalidate-registers" : [ "zmm3", "ymm3", "xmm3" ] },
+            "zmm4"  : { "invalidate-registers" : [ "zmm4", "ymm4", "xmm4" ] },
+            "zmm5"  : { "invalidate-registers" : [ "zmm5", "ymm5", "xmm5" ] },
+            "zmm6"  : { "invalidate-registers" : [ "zmm6", "ymm6", "xmm6" ] },
+            "zmm7"  : { "invalidate-registers" : [ "zmm7", "ymm7", "xmm7" ] },
+            "zmm8"  : { "invalidate-registers" : [ "zmm8", "ymm8", "xmm8" ] },
+            "zmm9"  : { "invalidate-registers" : [ "zmm9", "ymm9", "xmm9" ] },
+            "zmm10" : { "invalidate-registers" : [ "zmm10", "ymm10", "xmm10" ] },
+            "zmm11" : { "invalidate-registers" : [ "zmm11", "ymm11", "xmm11" ] },
+            "zmm12" : { "invalidate-registers" : [ "zmm12", "ymm12", "xmm12" ] },
+            "zmm13" : { "invalidate-registers" : [ "zmm13", "ymm13", "xmm13" ] },
+            "zmm14" : { "invalidate-registers" : [ "zmm14", "ymm14", "xmm14" ] },
+            "zmm15" : { "invalidate-registers" : [ "zmm15", "ymm15", "xmm15" ] },
+            "zmm16" : { "invalidate-registers" : [ "zmm16", "ymm16" ] },
+            "zmm17" : { "invalidate-registers" : [ "zmm17", "ymm17" ] },
+            "zmm18" : { "invalidate-registers" : [ "zmm18", "ymm18" ] },
+            "zmm19" : { "invalidate-registers" : [ "zmm19", "ymm19" ] },
+            "zmm20" : { "invalidate-registers" : [ "zmm20", "ymm20" ] },
+            "zmm21" : { "invalidate-registers" : [ "zmm21", "ymm21" ] },
+            "zmm22" : { "invalidate-registers" : [ "zmm22", "ymm22" ] },
+            "zmm23" : { "invalidate-registers" : [ "zmm23", "ymm23" ] },
+            "zmm24" : { "invalidate-registers" : [ "zmm24", "ymm24" ] },
+            "zmm25" : { "invalidate-registers" : [ "zmm25", "ymm25" ] },
+            "zmm26" : { "invalidate-registers" : [ "zmm26", "ymm26" ] },
+            "zmm27" : { "invalidate-registers" : [ "zmm27", "ymm27" ] },
+            "zmm28" : { "invalidate-registers" : [ "zmm28", "ymm28" ] },
+            "zmm29" : { "invalidate-registers" : [ "zmm29", "ymm29" ] },
+            "zmm30" : { "invalidate-registers" : [ "zmm30", "ymm30" ] },
+            "zmm31" : { "invalidate-registers" : [ "zmm31", "ymm31" ] }
+        },
+
+        "avx512-opmask" : {
+            "*" : {
+                "bit-size"              : 64,
+                "encoding"              : "int",
+                "format"                : "hex",
+
+                "base-gdb-reg-number"   : 90,
+                "no-gdb-reg-number"     : true
+            },
+
+            "k0" : { }, "k1" : { }, "k2" : { }, "k3" : { },
+            "k4" : { }, "k5" : { }, "k6" : { }, "k7" : { }
+        },
+
+        "apx-gpr" : {
+            "*" : {
+                "bit-size"              : 64,
+                "encoding"              : "int",
+                "format"                : "hex",
+
+                "base-gdb-reg-number"   : 98,
+                "no-gdb-reg-number"     : true,
+
+                "referencing-sets"      : [ "apx-pseudo-gpr32", "apx-pseudo-gpr16", "apx-pseudo-gpr8l" ]
+            },
+
+            "r16" : { "invalidate-registers" : [ "r16", "r16d", "r16w", "r16l" ] },
+            "r17" : { "invalidate-registers" : [ "r17", "r17d", "r17w", "r17l" ] },
+            "r18" : { "invalidate-registers" : [ "r18", "r18d", "r18w", "r18l" ] },
+            "r19" : { "invalidate-registers" : [ "r19", "r19d", "r19w", "r19l" ] },
+            "r20" : { "invalidate-registers" : [ "r20", "r20d", "r20w", "r20l" ] },
+            "r21" : { "invalidate-registers" : [ "r21", "r21d", "r21w", "r21l" ] },
+            "r22" : { "invalidate-registers" : [ "r22", "r22d", "r22w", "r22l" ] },
+            "r23" : { "invalidate-registers" : [ "r23", "r23d", "r23w", "r23l" ] },
+            "r24" : { "invalidate-registers" : [ "r24", "r24d", "r24w", "r24l" ] },
+            "r25" : { "invalidate-registers" : [ "r25", "r25d", "r25w", "r25l" ] },
+            "r26" : { "invalidate-registers" : [ "r26", "r26d", "r26w", "r26l" ] },
+            "r27" : { "invalidate-registers" : [ "r27", "r27d", "r27w", "r27l" ] },
+            "r28" : { "invalidate-registers" : [ "r28", "r28d", "r28w", "r28l" ] },
+            "r29" : { "invalidate-registers" : [ "r29", "r29d", "r29w", "r29l" ] },
+            "r30" : { "invalidate-registers" : [ "r30", "r30d", "r30w", "r30l" ] },
+            "r31" : { "invalidate-registers" : [ "r31", "r31d", "r31w", "r31l" ] }
+        },
+
+        "apx-pseudo-gpr32" : {
+            "*" : {
+                "private"           : true,
+                "bit-size"          : 32,
+                "encoding"          : "int",
+                "format"            : "hex",
+                "parent-set"        : "apx-gpr",
+                "parent-element"    : 0,
+                "referencing-sets"  : [ "apx-gpr", "apx-pseudo-gpr16", "apx-pseudo-gpr8l" ]
+            },
+
+            "r16d" : { "container-registers" : [ "r16" ], "invalidate-registers" : [ "r16", "r16d", "r16w", "r16l" ] },
+            "r17d" : { "container-registers" : [ "r17" ], "invalidate-registers" : [ "r17", "r17d", "r17w", "r17l" ] },
+            "r18d" : { "container-registers" : [ "r18" ], "invalidate-registers" : [ "r18", "r18d", "r18w", "r18l" ] },
+            "r19d" : { "container-registers" : [ "r19" ], "invalidate-registers" : [ "r19", "r19d", "r19w", "r19l" ] },
+            "r20d" : { "container-registers" : [ "r20" ], "invalidate-registers" : [ "r20", "r20d", "r20w", "r20l" ] },
+            "r21d" : { "container-registers" : [ "r21" ], "invalidate-registers" : [ "r21", "r21d", "r21w", "r21l" ] },
+            "r22d" : { "container-registers" : [ "r22" ], "invalidate-registers" : [ "r22", "r22d", "r22w", "r22l" ] },
+            "r23d" : { "container-registers" : [ "r23" ], "invalidate-registers" : [ "r23", "r23d", "r23w", "r23l" ] },
+            "r24d" : { "container-registers" : [ "r24" ], "invalidate-registers" : [ "r24", "r24d", "r24w", "r24l" ] },
+            "r25d" : { "container-registers" : [ "r25" ], "invalidate-registers" : [ "r25", "r25d", "r25w", "r25l" ] },
+            "r26d" : { "container-registers" : [ "r26" ], "invalidate-registers" : [ "r26", "r26d", "r26w", "r26l" ] },
+            "r27d" : { "container-registers" : [ "r27" ], "invalidate-registers" : [ "r27", "r27d", "r27w", "r27l" ] },
+            "r28d" : { "container-registers" : [ "r28" ], "invalidate-registers" : [ "r28", "r28d", "r28w", "r28l" ] },
+            "r29d" : { "container-registers" : [ "r29" ], "invalidate-registers" : [ "r29", "r29d", "r29w", "r29l" ] },
+            "r30d" : { "container-registers" : [ "r30" ], "invalidate-registers" : [ "r30", "r30d", "r30w", "r30l" ] },
+            "r31d" : { "container-registers" : [ "r31" ], "invalidate-registers" : [ "r31", "r31d", "r31w", "r31l" ] }
+        },
+
+        "apx-pseudo-gpr16" : {
+            "*" : {
+                "private"           : true,
+                "bit-size"          : 16,
+                "encoding"          : "int",
+                "format"            : "hex",
+                "parent-set"        : "apx-gpr",
+                "parent-element"    : 0,
+                "referencing-sets"  : [ "apx-gpr", "apx-pseudo-gpr32", "apx-pseudo-gpr8l" ]
+            },
+
+            "r16w" : { "container-registers" : [ "r16" ], "invalidate-registers" : [ "r16", "r16d", "r16w", "r16l" ] },
+            "r17w" : { "container-registers" : [ "r17" ], "invalidate-registers" : [ "r17", "r17d", "r17w", "r17l" ] },
+            "r18w" : { "container-registers" : [ "r18" ], "invalidate-registers" : [ "r18", "r18d", "r18w", "r18l" ] },
+            "r19w" : { "container-registers" : [ "r19" ], "invalidate-registers" : [ "r19", "r19d", "r19w", "r19l" ] },
+            "r20w" : { "container-registers" : [ "r20" ], "invalidate-registers" : [ "r20", "r20d", "r20w", "r20l" ] },
+            "r21w" : { "container-registers" : [ "r21" ], "invalidate-registers" : [ "r21", "r21d", "r21w", "r21l" ] },
+            "r22w" : { "container-registers" : [ "r22" ], "invalidate-registers" : [ "r22", "r22d", "r22w", "r22l" ] },
+            "r23w" : { "container-registers" : [ "r23" ], "invalidate-registers" : [ "r23", "r23d", "r23w", "r23l" ] },
+            "r24w" : { "container-registers" : [ "r24" ], "invalidate-registers" : [ "r24", "r24d", "r24w", "r24l" ] },
+            "r25w" : { "container-registers" : [ "r25" ], "invalidate-registers" : [ "r25", "r25d", "r25w", "r25l" ] },
+            "r26w" : { "container-registers" : [ "r26" ], "invalidate-registers" : [ "r26", "r26d", "r26w", "r26l" ] },
+            "r27w" : { "container-registers" : [ "r27" ], "invalidate-registers" : [ "r27", "r27d", "r27w", "r27l" ] },
+            "r28w" : { "container-registers" : [ "r28" ], "invalidate-registers" : [ "r28", "r28d", "r28w", "r28l" ] },
+            "r29w" : { "container-registers" : [ "r29" ], "invalidate-registers" : [ "r29", "r29d", "r29w", "r29l" ] },
+            "r30w" : { "container-registers" : [ "r30" ], "invalidate-registers" : [ "r30", "r30d", "r30w", "r30l" ] },
+            "r31w" : { "container-registers" : [ "r31" ], "invalidate-registers" : [ "r31", "r31d", "r31w", "r31l" ] }
+        },
+
+        "apx-pseudo-gpr8l" : {
+            "*" : {
+                "private"           : true,
+                "bit-size"          : 8,
+                "encoding"          : "int",
+                "format"            : "hex",
+                "parent-set"        : "apx-gpr",
+                "parent-element"    : 0,
+                "referencing-sets"  : [ "apx-gpr", "apx-pseudo-gpr32", "apx-pseudo-gpr16" ]
+            },
+
+            "r16l" : { "container-registers" : [ "r16" ], "invalidate-registers" : [ "r16", "r16d", "r16w", "r16l" ] },
+            "r17l" : { "container-registers" : [ "r17" ], "invalidate-registers" : [ "r17", "r17d", "r17w", "r17l" ] },
+            "r18l" : { "container-registers" : [ "r18" ], "invalidate-registers" : [ "r18", "r18d", "r18w", "r18l" ] },
+            "r19l" : { "container-registers" : [ "r19" ], "invalidate-registers" : [ "r19", "r19d", "r19w", "r19l" ] },
+            "r20l" : { "container-registers" : [ "r20" ], "invalidate-registers" : [ "r20", "r20d", "r20w", "r20l" ] },
+            "r21l" : { "container-registers" : [ "r21" ], "invalidate-registers" : [ "r21", "r21d", "r21w", "r21l" ] },
+            "r22l" : { "container-registers" : [ "r22" ], "invalidate-registers" : [ "r22", "r22d", "r22w", "r22l" ] },
+            "r23l" : { "container-registers" : [ "r23" ], "invalidate-registers" : [ "r23", "r23d", "r23w", "r23l" ] },
+            "r24l" : { "container-registers" : [ "r24" ], "invalidate-registers" : [ "r24", "r24d", "r24w", "r24l" ] },
+            "r25l" : { "container-registers" : [ "r25" ], "invalidate-registers" : [ "r25", "r25d", "r25w", "r25l" ] },
+            "r26l" : { "container-registers" : [ "r26" ], "invalidate-registers" : [ "r26", "r26d", "r26w", "r26l" ] },
+            "r27l" : { "container-registers" : [ "r27" ], "invalidate-registers" : [ "r27", "r27d", "r27w", "r27l" ] },
+            "r28l" : { "container-registers" : [ "r28" ], "invalidate-registers" : [ "r28", "r28d", "r28w", "r28l" ] },
+            "r29l" : { "container-registers" : [ "r29" ], "invalidate-registers" : [ "r29", "r29d", "r29w", "r29l" ] },
+            "r30l" : { "container-registers" : [ "r30" ], "invalidate-registers" : [ "r30", "r30d", "r30w", "r30l" ] },
+            "r31l" : { "container-registers" : [ "r31" ], "invalidate-registers" : [ "r31", "r31d", "r31w", "r31l" ] }
+        },
+
+        "amx-tile-config" : {
+            "tilecfg" : {
+                "bit-size"       : 512,
+                "encoding"       : "int",
+                "format"         : "vector",
+                "gdb-reg-number" : 114,
+                "no-gdb-reg-number" : true
+            }
+        },
+
+        "amx-tile-regs" : {
+            "*" : {
+                "bit-size"              : 8192,
+                "encoding"              : "int",
+                "format"                : "vector",
+
+                "base-gdb-reg-number"   : 115,
+                "no-gdb-reg-number"     : true
+            },
+
+            "tmm0" : { }, "tmm1" : { }, "tmm2" : { }, "tmm3" : { },
+            "tmm4" : { }, "tmm5" : { }, "tmm6" : { }, "tmm7" : { }
+        },
+
         "avx-regs" : {
             "*" : {
                 "bit-size"              : 256,
@@ -765,6 +966,35 @@
                 "contents"      : [
                     "register-sets:linux-regs"
                 ]
+            },
+            {
+                "indexed"       : false,
+                "filename"      : "64bit-avx512.xml",
+                "identifier"    : "org.gnu.gdb.i386.avx512",
+                "contents"      : [
+                    "register-sets:avx512-regs",
+                    "register-sets:avx512-opmask"
+                ]
+            },
+            {
+                "indexed"       : false,
+                "filename"      : "64bit-apx.xml",
+                "identifier"    : "org.gnu.gdb.i386.apx",
+                "contents"      : [
+                    "register-sets:apx-gpr",
+                    "register-sets:apx-pseudo-gpr32",
+                    "register-sets:apx-pseudo-gpr16",
+                    "register-sets:apx-pseudo-gpr8l"
+                ]
+            },
+            {
+                "indexed"       : false,
+                "filename"      : "64bit-amx.xml",
+                "identifier"    : "org.gnu.gdb.i386.amx",
+                "contents"      : [
+                    "register-sets:amx-tile-config",
+                    "register-sets:amx-tile-regs"
+                ]
             }
         ]
     },
@@ -796,6 +1026,29 @@
             "description" : "Advanced Vector Extensions",
             "sets"        : [
                 "avx-regs"
+            ]
+        },
+        {
+            "description" : "AVX-512",
+            "sets"        : [
+                "avx512-regs",
+                "avx512-opmask"
+            ]
+        },
+        {
+            "description" : "APX Extended Registers",
+            "sets"        : [
+                "apx-gpr",
+                "apx-pseudo-gpr32",
+                "apx-pseudo-gpr16",
+                "apx-pseudo-gpr8l"
+            ]
+        },
+        {
+            "description" : "Advanced Matrix Extensions",
+            "sets"        : [
+                "amx-tile-config",
+                "amx-tile-regs"
             ]
         }
     ]

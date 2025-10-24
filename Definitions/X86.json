@@ -377,6 +377,82 @@
             }
         },
 
+        "avx512-regs" : {
+            "*" : {
+                "bit-size"                : 512,
+                "encoding"                : "int",
+                "format"                  : "vector",
+
+                "base-gdb-reg-number"     : 49,
+                "no-gdb-reg-number"       : true,
+
+                "referencing-sets"        : [ "avx-regs", "sse-regs" ]
+            },
+
+            "zmm0"  : {
+                "invalidate-registers" : [ "zmm0", "ymm0", "xmm0" ]
+            },
+            "zmm1"  : {
+                "invalidate-registers" : [ "zmm1", "ymm1", "xmm1" ]
+            },
+            "zmm2"  : {
+                "invalidate-registers" : [ "zmm2", "ymm2", "xmm2" ]
+            },
+            "zmm3"  : {
+                "invalidate-registers" : [ "zmm3", "ymm3", "xmm3" ]
+            },
+            "zmm4"  : {
+                "invalidate-registers" : [ "zmm4", "ymm4", "xmm4" ]
+            },
+            "zmm5"  : {
+                "invalidate-registers" : [ "zmm5", "ymm5", "xmm5" ]
+            },
+            "zmm6"  : {
+                "invalidate-registers" : [ "zmm6", "ymm6", "xmm6" ]
+            },
+            "zmm7"  : {
+                "invalidate-registers" : [ "zmm7", "ymm7", "xmm7" ]
+            }
+        },
+
+        "avx512-opmask" : {
+            "*" : {
+                "bit-size"              : 64,
+                "encoding"              : "int",
+                "format"                : "hex",
+
+                "base-gdb-reg-number"   : 57,
+                "no-gdb-reg-number"     : true
+            },
+
+            "k0" : { }, "k1" : { }, "k2" : { }, "k3" : { },
+            "k4" : { }, "k5" : { }, "k6" : { }, "k7" : { }
+        },
+
+        "amx-tile-config" : {
+            "tilecfg" : {
+                "bit-size"       : 512,
+                "encoding"       : "int",
+                "format"         : "vector",
+                "gdb-reg-number" : 65,
+                "no-gdb-reg-number" : true
+            }
+        },
+
+        "amx-tile-regs" : {
+            "*" : {
+                "bit-size"              : 8192,
+                "encoding"              : "int",
+                "format"                : "vector",
+
+                "base-gdb-reg-number"   : 66,
+                "no-gdb-reg-number"     : true
+            },
+
+            "tmm0" : { }, "tmm1" : { }, "tmm2" : { }, "tmm3" : { },
+            "tmm4" : { }, "tmm5" : { }, "tmm6" : { }, "tmm7" : { }
+        },
+
         "avx-regs" : {
             "*" : {
                 "bit-size"                : 256,
@@ -517,6 +593,24 @@
                 "contents"      : [
                     "register-sets:linux-regs"
                 ]
+            },
+            {
+                "indexed"       : false,
+                "filename"      : "i386-avx512.xml",
+                "identifier"    : "org.gnu.gdb.i386.avx512",
+                "contents"      : [
+                    "register-sets:avx512-regs",
+                    "register-sets:avx512-opmask"
+                ]
+            },
+            {
+                "indexed"       : false,
+                "filename"      : "i386-amx.xml",
+                "identifier"    : "org.gnu.gdb.i386.amx",
+                "contents"      : [
+                    "register-sets:amx-tile-config",
+                    "register-sets:amx-tile-regs"
+                ]
             }
         ]
     },
@@ -547,6 +641,20 @@
             "description" : "Advanced Vector Extensions",
             "sets"        : [
                 "avx-regs"
+            ]
+        },
+        {
+            "description" : "AVX-512",
+            "sets"        : [
+                "avx512-regs",
+                "avx512-opmask"
+            ]
+        },
+        {
+            "description" : "Advanced Matrix Extensions",
+            "sets"        : [
+                "amx-tile-config",
+                "amx-tile-regs"
             ]
         }
     ]
