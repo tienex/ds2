@@ -86,6 +86,15 @@ typedef SSIZE_T ssize_t;
 #elif defined(__mips__) || defined(__mips) || defined(_MIPS_ARCH)
 #define ARCH_MIPS
 #define BITSIZE_32
+#elif defined(__alpha__) || defined(__alpha) || defined(_M_ALPHA)
+// Alpha is primarily 64-bit, but Windows NT had a 32-bit variant
+#if defined(_M_ALPHA) && !defined(__alpha64__)
+#define ARCH_ALPHA32
+#define BITSIZE_32
+#else
+#define ARCH_ALPHA
+#define BITSIZE_64
+#endif
 #else
 #error "Architecture not supported."
 #endif

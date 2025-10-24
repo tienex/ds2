@@ -24,6 +24,12 @@
 #elif defined(ARCH_X86_64)
 #include "DebugServer2/Architecture/X86/CPUState.h"
 #include "DebugServer2/Architecture/X86_64/CPUState.h"
+#elif defined(ARCH_MIPS)
+#include "DebugServer2/Architecture/MIPS/CPUState.h"
+#elif defined(ARCH_MIPS64)
+#include "DebugServer2/Architecture/MIPS64/CPUState.h"
+#elif defined(ARCH_ALPHA) || defined(ARCH_ALPHA32)
+#include "DebugServer2/Architecture/Alpha/CPUState.h"
 #else
 #error "Architecture not supported."
 #endif
@@ -40,6 +46,12 @@ using ARM64::CPUState;
 using X86::CPUState;
 #elif defined(ARCH_X86_64)
 using X86_64::CPUState;
+#elif defined(ARCH_MIPS)
+using MIPS::CPUState;
+#elif defined(ARCH_MIPS64)
+using MIPS64::CPUState;
+#elif defined(ARCH_ALPHA) || defined(ARCH_ALPHA32)
+using Alpha::CPUState;
 #else
 #error "Architecture not supported."
 #endif

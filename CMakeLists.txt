@@ -37,6 +37,8 @@ elseif (ARCH_NAME MATCHES "^MIPS64")
   set(ARCH_NAME "MIPS64")
 elseif (ARCH_NAME MATCHES "^MIPS")
   set(ARCH_NAME "MIPS")
+elseif (ARCH_NAME MATCHES "^ALPHA" OR ARCH_NAME MATCHES "^AXP")
+  set(ARCH_NAME "ALPHA")
 endif ()
 
 if ("${OS_NAME}" MATCHES "Linux" OR "${OS_NAME}" MATCHES "Android")
@@ -96,6 +98,8 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     set(ARCH_NAME "ARM")
   elseif ("${CMAKE_CXX_COMPILER_ARCHITECTURE_ID}" MATCHES "MIPS")
     set(ARCH_NAME "MIPS")
+  elseif ("${CMAKE_CXX_COMPILER_ARCHITECTURE_ID}" MATCHES "ALPHA")
+    set(ARCH_NAME "ALPHA32") # Windows NT used 32-bit Alpha variant
   endif()
 endif ()
 
@@ -133,6 +137,14 @@ set(ARCHITECTURE_MIPS64_SOURCES
     ${ARCHITECTURE_MIPS_SOURCES}
     Sources/Architecture/MIPS64/RegistersDescriptors.cpp
     Sources/Architecture/MIPS64/SoftwareSingleStep.cpp
+    )
+
+set(ARCHITECTURE_ALPHA_SOURCES
+    Sources/Architecture/Alpha/SoftwareSingleStep.cpp
+    )
+
+set(ARCHITECTURE_ALPHA32_SOURCES
+    ${ARCHITECTURE_ALPHA_SOURCES}
     )
 
 set(HOST_COMMON_SOURCES
@@ -352,6 +364,13 @@ set(CORE_MIPS64_SOURCES
     Sources/Core/MIPS64/HardwareBreakpointManager.cpp
     Sources/Core/MIPS64/SoftwareBreakpointManager.cpp
     )
+
+set(CORE_ALPHA_SOURCES
+    Sources/Core/Alpha/HardwareBreakpointManager.cpp
+    Sources/Core/Alpha/SoftwareBreakpointManager.cpp
+    )
+
+set(CORE_ALPHA32_SOURCES ${CORE_ALPHA_SOURCES})
 
 set(HOST_SOURCES ${HOST_COMMON_SOURCES} ${HOST_${OS_NAME}_SOURCES})
 set(TARGET_SOURCES ${TARGET_COMMON_SOURCES} ${TARGET_${OS_NAME}_SOURCES})
