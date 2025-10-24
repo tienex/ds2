@@ -1,0 +1,130 @@
+{
+  "namespace" : "NS32K",
+  "register-sets" : {
+    "gpr" : {
+      "bit-size" : 32,
+      "description" : "General Purpose Registers (8 x 32-bit)",
+      "registers" : {
+        "r0" : { "description" : "General purpose register 0" },
+        "r1" : { "description" : "General purpose register 1" },
+        "r2" : { "description" : "General purpose register 2" },
+        "r3" : { "description" : "General purpose register 3" },
+        "r4" : { "description" : "General purpose register 4" },
+        "r5" : { "description" : "General purpose register 5" },
+        "r6" : { "description" : "General purpose register 6" },
+        "r7" : { "description" : "General purpose register 7" }
+      }
+    },
+    "special-regs" : {
+      "bit-size" : 32,
+      "description" : "Dedicated Registers",
+      "registers" : {
+        "fp" : { "generic-name" : "fp", "description" : "Frame Pointer" },
+        "sp" : { "generic-name" : "sp", "description" : "Stack Pointer" },
+        "sb" : { "description" : "Static Base (position-independent code)" },
+        "pc" : { "generic-name" : "pc", "description" : "Program Counter" },
+        "psr" : { "description" : "Processor Status Register" },
+        "mod" : { "description" : "Module Register (MMU control)" },
+        "intbase" : { "description" : "Interrupt Vector Base" },
+        "cfg" : { "description" : "Configuration Register" }
+      }
+    },
+    "fp-single-regs" : {
+      "bit-size" : 32,
+      "encoding" : "ieee-single",
+      "description" : "Floating-Point Single-Precision Registers (8 x 32-bit)",
+      "registers" : {
+        "f0" : { },
+        "f1" : { },
+        "f2" : { },
+        "f3" : { },
+        "f4" : { },
+        "f5" : { },
+        "f6" : { },
+        "f7" : { }
+      }
+    },
+    "fp-double-regs" : {
+      "bit-size" : 64,
+      "encoding" : "ieee-double",
+      "description" : "Floating-Point Double-Precision Registers (4 x 64-bit)",
+      "registers" : {
+        "f0" : { "description" : "f0-f1 pair" },
+        "f2" : { "description" : "f2-f3 pair" },
+        "f4" : { "description" : "f4-f5 pair" },
+        "f6" : { "description" : "f6-f7 pair" }
+      }
+    },
+    "fpu-status" : {
+      "bit-size" : 32,
+      "description" : "FPU Status Register",
+      "registers" : {
+        "fsr" : { "description" : "Floating-Point Status Register" }
+      }
+    },
+    "mmu-regs" : {
+      "bit-size" : 32,
+      "description" : "Memory Management Unit Registers (NS32532+)",
+      "registers" : {
+        "ptb0" : { "description" : "Page Table Base 0 (user mode)" },
+        "ptb1" : { "description" : "Page Table Base 1 (supervisor mode)" },
+        "eia" : { "description" : "Error/Invalidate Address" },
+        "mcr" : { "description" : "MMU Control Register" },
+        "msr" : { "description" : "MMU Status Register" },
+        "tear" : { "description" : "Translation Exception Address Register" }
+      }
+    },
+    "debug-regs" : {
+      "bit-size" : 32,
+      "description" : "Debug and Breakpoint Registers (NS32532)",
+      "registers" : {
+        "bpc" : { "description" : "Breakpoint Program Counter" },
+        "dcr" : { "description" : "Debug Control Register" },
+        "dsr" : { "description" : "Debug Status Register" },
+        "car" : { "description" : "Compare Address Register" }
+      }
+    },
+    "cache-regs" : {
+      "bit-size" : 32,
+      "description" : "Cache Control Registers (NS32532)",
+      "registers" : {
+        "iccr" : { "description" : "Instruction Cache Control Register" },
+        "dccr" : { "description" : "Data Cache Control Register" }
+      }
+    }
+  },
+  "gdb-defs" : {
+    "architecture" : "ns32k",
+    "features" : [
+      "org.gnu.gdb.ns32k.core",
+      "org.gnu.gdb.ns32k.fpu"
+    ],
+    "core-registers" : [
+      { "name" : "r0", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r1", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r2", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r3", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r4", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r5", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r6", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r7", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "fp", "bitsize" : 32, "type" : "data_ptr", "group" : "general" },
+      { "name" : "sp", "bitsize" : 32, "type" : "data_ptr", "group" : "general" },
+      { "name" : "sb", "bitsize" : 32, "type" : "data_ptr", "group" : "general" },
+      { "name" : "pc", "bitsize" : 32, "type" : "code_ptr", "group" : "general" },
+      { "name" : "psr", "bitsize" : 32, "type" : "uint32", "group" : "general" },
+      { "name" : "mod", "bitsize" : 32, "type" : "uint32", "group" : "general" }
+    ],
+    "float-registers" : [
+      { "name" : "f0", "bitsize" : 32, "type" : "ieee_single", "group" : "float" },
+      { "name" : "f1", "bitsize" : 32, "type" : "ieee_single", "group" : "float" },
+      { "name" : "f2", "bitsize" : 32, "type" : "ieee_single", "group" : "float" },
+      { "name" : "f3", "bitsize" : 32, "type" : "ieee_single", "group" : "float" },
+      { "name" : "f4", "bitsize" : 32, "type" : "ieee_single", "group" : "float" },
+      { "name" : "f5", "bitsize" : 32, "type" : "ieee_single", "group" : "float" },
+      { "name" : "f6", "bitsize" : 32, "type" : "ieee_single", "group" : "float" },
+      { "name" : "f7", "bitsize" : 32, "type" : "ieee_single", "group" : "float" },
+      { "name" : "fsr", "bitsize" : 32, "type" : "uint32", "group" : "float" }
+    ]
+  }
+}
