@@ -1,0 +1,134 @@
+{
+  "namespace" : "WE32K",
+  "register-sets" : {
+    "gpr" : {
+      "bit-size" : 32,
+      "description" : "General Purpose Registers (9 x 32-bit)",
+      "registers" : {
+        "r0" : { "description" : "General purpose register 0 (temporary)" },
+        "r1" : { "description" : "General purpose register 1 (temporary)" },
+        "r2" : { "description" : "General purpose register 2 (temporary)" },
+        "r3" : { "description" : "General purpose register 3 (saved)" },
+        "r4" : { "description" : "General purpose register 4 (saved)" },
+        "r5" : { "description" : "General purpose register 5 (saved)" },
+        "r6" : { "description" : "General purpose register 6 (saved)" },
+        "r7" : { "description" : "General purpose register 7 (saved)" },
+        "r8" : { "description" : "General purpose register 8 (saved)" }
+      }
+    },
+    "special-regs" : {
+      "bit-size" : 32,
+      "description" : "Special Purpose Registers",
+      "registers" : {
+        "fp" : { "alternate-name" : "r9", "generic-name" : "fp", "description" : "Frame Pointer (R9)" },
+        "ap" : { "alternate-name" : "r10", "description" : "Argument Pointer (R10)" },
+        "psw" : { "alternate-name" : "r11", "description" : "Processor Status Word (R11)" },
+        "sp" : { "alternate-name" : "r12", "generic-name" : "sp", "description" : "Stack Pointer (R12)" },
+        "pcbp" : { "alternate-name" : "r13", "description" : "Process Control Block Pointer (R13)" },
+        "isp" : { "alternate-name" : "r14", "description" : "Interrupt Stack Pointer (R14)" },
+        "pc" : { "alternate-name" : "r15", "generic-name" : "pc", "description" : "Program Counter (R15)" }
+      }
+    },
+    "mau-double-regs" : {
+      "bit-size" : 64,
+      "encoding" : "ieee-double",
+      "description" : "MAU Double-Precision Registers (4 x 64-bit)",
+      "registers" : {
+        "d0" : { "description" : "MAU double-precision register 0" },
+        "d1" : { "description" : "MAU double-precision register 1" },
+        "d2" : { "description" : "MAU double-precision register 2" },
+        "d3" : { "description" : "MAU double-precision register 3" }
+      }
+    },
+    "mau-single-regs" : {
+      "bit-size" : 32,
+      "encoding" : "ieee-single",
+      "description" : "MAU Single-Precision Registers (8 x 32-bit)",
+      "registers" : {
+        "s0" : { "description" : "MAU single-precision register 0 (d0 low)" },
+        "s1" : { "description" : "MAU single-precision register 1 (d0 high)" },
+        "s2" : { "description" : "MAU single-precision register 2 (d1 low)" },
+        "s3" : { "description" : "MAU single-precision register 3 (d1 high)" },
+        "s4" : { "description" : "MAU single-precision register 4 (d2 low)" },
+        "s5" : { "description" : "MAU single-precision register 5 (d2 high)" },
+        "s6" : { "description" : "MAU single-precision register 6 (d3 low)" },
+        "s7" : { "description" : "MAU single-precision register 7 (d3 high)" }
+      }
+    },
+    "mau-status" : {
+      "bit-size" : 32,
+      "description" : "MAU Status and Control Registers",
+      "registers" : {
+        "masr" : { "description" : "MAU Status Register" },
+        "macr" : { "description" : "MAU Control Register" }
+      }
+    },
+    "mmu-regs" : {
+      "bit-size" : 32,
+      "description" : "Memory Management Unit Registers",
+      "registers" : {
+        "fltcr" : { "description" : "Fault Control Register" },
+        "fltadr" : { "description" : "Fault Address Register" },
+        "sdr0" : { "description" : "Segment Descriptor Register 0" },
+        "sdr1" : { "description" : "Segment Descriptor Register 1" },
+        "sdr2" : { "description" : "Segment Descriptor Register 2" }
+      }
+    },
+    "system-regs" : {
+      "bit-size" : 32,
+      "description" : "System Control Registers",
+      "registers" : {
+        "ivtp" : { "description" : "Interrupt Vector Table Pointer" },
+        "acr" : { "description" : "Abort Control Register" },
+        "asr" : { "description" : "Abort Status Register" },
+        "uar" : { "description" : "Unaligned Access Register" },
+        "tcr" : { "description" : "Timer Control Register" }
+      }
+    },
+    "debug-regs" : {
+      "bit-size" : 32,
+      "description" : "Debug and Breakpoint Registers",
+      "registers" : {
+        "dr0" : { "description" : "Debug Register 0" },
+        "dr1" : { "description" : "Debug Register 1" },
+        "dr2" : { "description" : "Debug Register 2" },
+        "dr3" : { "description" : "Debug Register 3" },
+        "dcr" : { "description" : "Debug Control Register" },
+        "dsr" : { "description" : "Debug Status Register" }
+      }
+    }
+  },
+  "gdb-defs" : {
+    "architecture" : "we32k",
+    "features" : [
+      "org.gnu.gdb.we32k.core",
+      "org.gnu.gdb.we32k.mau"
+    ],
+    "core-registers" : [
+      { "name" : "r0", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r1", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r2", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r3", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r4", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r5", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r6", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r7", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r8", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "fp", "bitsize" : 32, "type" : "data_ptr", "group" : "general" },
+      { "name" : "ap", "bitsize" : 32, "type" : "data_ptr", "group" : "general" },
+      { "name" : "psw", "bitsize" : 32, "type" : "uint32", "group" : "general" },
+      { "name" : "sp", "bitsize" : 32, "type" : "data_ptr", "group" : "general" },
+      { "name" : "pcbp", "bitsize" : 32, "type" : "data_ptr", "group" : "general" },
+      { "name" : "isp", "bitsize" : 32, "type" : "data_ptr", "group" : "general" },
+      { "name" : "pc", "bitsize" : 32, "type" : "code_ptr", "group" : "general" }
+    ],
+    "mau-registers" : [
+      { "name" : "d0", "bitsize" : 64, "type" : "ieee_double", "group" : "float" },
+      { "name" : "d1", "bitsize" : 64, "type" : "ieee_double", "group" : "float" },
+      { "name" : "d2", "bitsize" : 64, "type" : "ieee_double", "group" : "float" },
+      { "name" : "d3", "bitsize" : 64, "type" : "ieee_double", "group" : "float" },
+      { "name" : "masr", "bitsize" : 32, "type" : "uint32", "group" : "float" },
+      { "name" : "macr", "bitsize" : 32, "type" : "uint32", "group" : "float" }
+    ]
+  }
+}
