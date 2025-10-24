@@ -42,10 +42,15 @@ enum class Variant {
   PPC_970FX,     // PowerPC 970FX - Lower power G5
   PPC_970MP,     // PowerPC 970MP - Dual-core G5
 
-  // Embedded PowerPC
+  // Embedded PowerPC (Book E architecture)
+  PPC_E200,      // e200 - Low-end embedded with VLE
   PPC_E500,      // e500 - Freescale embedded (SPE instead of AltiVec)
+  PPC_E500MC,    // e500mc - Multi-core e500 without SPE
+  PPC_E500V2,    // e500v2 - Enhanced e500 with double-precision SPE
   PPC_E5500,     // e5500 - 64-bit embedded
   PPC_E6500,     // e6500 - High-performance embedded with AltiVec
+  PPC_E7500,     // e7500 - High-performance multi-core embedded
+  QORIVVA,       // Qorivva - NXP automotive MCU (VLE capable)
 
   // Game console PowerPC
   GEKKO,         // Gekko - Nintendo GameCube (750-based)
@@ -68,6 +73,14 @@ enum class Variant {
   POWER8,        // POWER8 (2013) - Transactional memory, CAPI
   POWER9,        // POWER9 (2017) - NVLink, OpenCAPI, Meltdown-immune
   POWER10,       // POWER10 (2021) - PCIe Gen 5, DDR5, Matrix Math Accelerator
+
+  // IBM AS/400 PowerPC-AS (IMPI processors with TIMI)
+  AMAZON,        // Amazon - First 64-bit AS/400 PowerPC-AS (IMPI)
+  APACHE,        // Apache - Enhanced Amazon for AS/400
+  NORTHSTAR,     // Northstar - Advanced AS/400 processor
+  PULSAR,        // Pulsar - High-performance AS/400 processor
+  ISTAR,         // iStar - iSeries IMPI processor
+  SSTAR,         // SStar - System i processor
 };
 
 // Processor capabilities/features
@@ -81,6 +94,10 @@ struct CapabilityFlags {
   bool has_smt;          // Simultaneous Multithreading (POWER4+)
   bool has_vmx128;       // VMX128 extension (Xbox 360)
   bool has_mma;          // Matrix Math Accelerator (POWER10)
+  bool has_vle;          // Variable Length Encoding (e200, Qorivva)
+  bool has_booke;        // Book E embedded architecture
+  bool has_impi;         // IMPI (AS/400 processors)
+  bool has_timi;         // TIMI MI translation (AS/400)
 };
 
 // Get capabilities for a specific variant
@@ -117,17 +134,40 @@ inline CapabilityFlags GetCapabilities(Variant variant) {
       caps.has_altivec = true;
       break;
 
-    // Embedded with SPE
+    // Embedded with VLE (Book E)
+    case Variant::PPC_E200:
+      caps.has_64bit = false;
+      caps.has_vle = true;
+      caps.has_booke = true;
+      break;
+
+    case Variant::QORIVVA:
+      caps.has_64bit = false;
+      caps.has_vle = true;
+      caps.has_booke = true;
+      caps.has_spe = true;
+      break;
+
+    // Embedded with SPE (Book E)
     case Variant::PPC_E500:
+    case Variant::PPC_E500V2:
       caps.has_64bit = false;
       caps.has_spe = true;
+      caps.has_booke = true;
+      break;
+
+    case Variant::PPC_E500MC:
+      caps.has_64bit = false;
+      caps.has_booke = true;
       break;
 
     case Variant::PPC_E5500:
     case Variant::PPC_E6500:
+    case Variant::PPC_E7500:
       caps.has_64bit = true;
-      caps.has_spe = true;
-      caps.has_altivec = (variant == Variant::PPC_E6500);
+      caps.has_spe = (variant != Variant::PPC_E500MC);
+      caps.has_altivec = (variant == Variant::PPC_E6500 || variant == Variant::PPC_E7500);
+      caps.has_booke = true;
       break;
 
     // Game consoles
@@ -210,6 +250,20 @@ inline CapabilityFlags GetCapabilities(Variant variant) {
       caps.has_htm = true;
       caps.has_mma = true;  // Matrix Math Accelerator
       break;
+
+    // AS/400 PowerPC-AS (IMPI with TIMI)
+    case Variant::AMAZON:
+    case Variant::APACHE:
+    case Variant::NORTHSTAR:
+    case Variant::PULSAR:
+    case Variant::ISTAR:
+    case Variant::SSTAR:
+      caps.has_64bit = true;
+      caps.has_altivec = false;  // AS/400 processors don't use AltiVec
+      caps.has_impi = true;      // IMPI architecture
+      caps.has_timi = true;      // TIMI MI translation layer
+      caps.has_smt = true;       // Support multithreading
+      break;
   }
 
   return caps;
@@ -235,6 +289,16 @@ namespace PVR {
 
   constexpr uint32_t CELL_PPU      = 0x00700100;  // PS3 / Cell PPE
 
+  // Embedded PowerPC (Book E)
+  constexpr uint32_t PPC_E200      = 0x81000000;  // e200 core
+  constexpr uint32_t PPC_E500      = 0x80200000;  // e500 core
+  constexpr uint32_t PPC_E500V2    = 0x80210000;  // e500v2 core
+  constexpr uint32_t PPC_E500MC    = 0x80230000;  // e500mc core
+  constexpr uint32_t PPC_E5500     = 0x80240000;  // e5500 core
+  constexpr uint32_t PPC_E6500     = 0x80400000;  // e6500 core
+  constexpr uint32_t QORIVVA       = 0x81100000;  // Qorivva (e200-based)
+
+  // IBM POWER Server
   constexpr uint32_t POWER4        = 0x00350000;
   constexpr uint32_t POWER4_PLUS   = 0x00380000;
   constexpr uint32_t POWER5        = 0x003A0000;
@@ -245,6 +309,14 @@ namespace PVR {
   constexpr uint32_t POWER8        = 0x004D0000;
   constexpr uint32_t POWER9        = 0x004E0000;
   constexpr uint32_t POWER10       = 0x00800000;
+
+  // AS/400 PowerPC-AS (IMPI)
+  constexpr uint32_t AMAZON        = 0x00410000;  // Amazon
+  constexpr uint32_t APACHE        = 0x00420000;  // Apache
+  constexpr uint32_t NORTHSTAR     = 0x00430000;  // Northstar
+  constexpr uint32_t PULSAR        = 0x00440000;  // Pulsar
+  constexpr uint32_t ISTAR         = 0x00450000;  // iStar
+  constexpr uint32_t SSTAR         = 0x00460000;  // SStar
 }
 
 } // namespace PowerPC
