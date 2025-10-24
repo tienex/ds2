@@ -10,92 +10,81 @@
 
 #pragma once
 
-#include "DebugServer2/Base.h"
-
-#if defined(ARCH_SPARC) || defined(ARCH_SPARC64)
-
-#include <cstdint>
+#include "DebugServer2/Architecture/CPUState.h"
 
 namespace ds2 {
 namespace Architecture {
 namespace SPARC {
 
 //
-// SPARC CPU State
+// SPARC (Scalable Processor ARChitecture) 32-bit CPU State
+// RISC architecture by Sun Microsystems (1987-present)
+// Used in: Sun workstations/servers, embedded systems
+// Variants: SPARC v7, v8, v8E (with FPU)
 //
-// Supports both 32-bit SPARC (SPARC V8) and 64-bit SPARC (SPARC V9/UltraSPARC)
-//
-
-#if defined(ARCH_SPARC64)
-using reg_t = uint64_t;
-#else
-using reg_t = uint32_t;
-#endif
 
 struct CPUState {
-  // Global registers (g0-g7)
-  union {
-    reg_t gregs[8];
-    struct {
-      reg_t g0, g1, g2, g3, g4, g5, g6, g7;
+  //
+  // General Purpose Registers (32 x 32-bit)
+  // SPARC uses register windows for efficient procedure calls
+  //
+  struct {
+    union {
+      uint32_t regs[32];
+      struct {
+        uint32_t g0, g1, g2, g3, g4, g5, g6, g7;  // Global (g0 = 0)
+        uint32_t o0, o1, o2, o3, o4, o5, o6, o7;  // Out (o6=sp, o7=retaddr-8)
+        uint32_t l0, l1, l2, l3, l4, l5, l6, l7;  // Local
+        uint32_t i0, i1, i2, i3, i4, i5, i6, i7;  // In (i6=fp, i7=retaddr)
+      };
     };
   } gp;
 
-  // Output registers (o0-o7)
+  struct {
+    uint32_t pc;      // Program Counter
+    uint32_t npc;     // Next Program Counter (delayed branch)
+    uint32_t y;       // Multiply/Divide register
+  } special;
+
+  struct {
+    uint32_t cwp : 5;    // Current Window Pointer
+    uint32_t et : 1;     // Enable Traps
+    uint32_t ps : 1;     // Previous Supervisor
+    uint32_t s : 1;      // Supervisor mode
+    uint32_t pil : 4;    // Processor Interrupt Level
+    uint32_t ef : 1;     // Enable Floating-point
+    uint32_t ec : 1;     // Enable Coprocessor
+    uint32_t reserved : 6;
+    uint32_t icc : 4;    // Integer Condition Codes
+    uint32_t ver : 4;    // Version
+    uint32_t impl : 4;   // Implementation
+  } psr;
+
+  uint32_t wim;          // Window Invalid Mask
+
+  struct {
+    uint32_t tba : 20;   // Trap Base Address
+    uint32_t tt : 8;     // Trap Type
+    uint32_t zero : 4;
+  } tbr;
+
   union {
-    reg_t oregs[8];
-    struct {
-      reg_t o0, o1, o2, o3, o4, o5, sp, o7;
-    };
-  } out;
+    float s[32];         // Single-precision
+    double d[16];        // Double-precision
+    uint32_t raw32[32];
+    uint64_t raw64[16];
+  } fpu;
 
-  // Local registers (l0-l7)
-  union {
-    reg_t lregs[8];
-    struct {
-      reg_t l0, l1, l2, l3, l4, l5, l6, l7;
-    };
-  } local;
+  struct {
+    uint32_t cexc : 5; uint32_t aexc : 5; uint32_t fcc : 2;
+    uint32_t qne : 1; uint32_t reserved1 : 2; uint32_t ftt : 3;
+    uint32_t ver : 3; uint32_t reserved2 : 2; uint32_t tem : 5;
+    uint32_t ns : 1; uint32_t rd : 2; uint32_t reserved3 : 1;
+  } fsr;
 
-  // Input registers (i0-i7)
-  union {
-    reg_t iregs[8];
-    struct {
-      reg_t i0, i1, i2, i3, i4, i5, fp, i7;
-    };
-  } in;
-
-  // Floating-point registers
-  // SPARC V8: 32x32-bit registers, can be used as 16x64-bit or 8x128-bit (quad)
-  // SPARC V9: 64 total FP registers
-  union {
-    float fregs[32];   // 32-bit floats
-    double dregs[16];  // 64-bit doubles
-    struct {
-      float f0, f1, f2, f3, f4, f5, f6, f7;
-      float f8, f9, f10, f11, f12, f13, f14, f15;
-      float f16, f17, f18, f19, f20, f21, f22, f23;
-      float f24, f25, f26, f27, f28, f29, f30, f31;
-    };
-  } fp;
-
-  // Special purpose registers
-  reg_t pc;     // Program counter
-  reg_t npc;    // Next program counter
-  reg_t y;      // Y register (multiply/divide)
-  uint32_t psr; // Processor state register (V8) / PSTATE (V9)
-  uint32_t wim; // Window invalid mask (V8)
-  uint32_t tbr; // Trap base register (V8)
-  uint64_t fsr; // Floating-point state register
-  uint64_t fprs;// FP registers state (V9)
-  uint64_t ccr; // Condition codes register (V9)
-  uint64_t asi; // Address space identifier (V9)
-
-  inline void clear() { memset(this, 0, sizeof(*this)); }
+  uint32_t asr[32];      // Ancillary State Registers
 };
 
 } // namespace SPARC
 } // namespace Architecture
 } // namespace ds2
-
-#endif // ARCH_SPARC || ARCH_SPARC64
