@@ -39,6 +39,18 @@ elseif (ARCH_NAME MATCHES "^MIPS")
   set(ARCH_NAME "MIPS")
 elseif (ARCH_NAME MATCHES "^ALPHA" OR ARCH_NAME MATCHES "^AXP")
   set(ARCH_NAME "ALPHA")
+elseif (ARCH_NAME MATCHES "PPC64" OR ARCH_NAME MATCHES "POWERPC64")
+  set(ARCH_NAME "PPC64")
+elseif (ARCH_NAME MATCHES "PPC" OR ARCH_NAME MATCHES "POWERPC")
+  set(ARCH_NAME "PPC")
+elseif (ARCH_NAME MATCHES "PARISC64" OR ARCH_NAME MATCHES "HPPA64")
+  set(ARCH_NAME "PARISC64")
+elseif (ARCH_NAME MATCHES "PARISC" OR ARCH_NAME MATCHES "HPPA")
+  set(ARCH_NAME "PARISC")
+elseif (ARCH_NAME MATCHES "SPARC64" OR ARCH_NAME MATCHES "SPARCV9")
+  set(ARCH_NAME "SPARC64")
+elseif (ARCH_NAME MATCHES "SPARC")
+  set(ARCH_NAME "SPARC")
 endif ()
 
 if ("${OS_NAME}" MATCHES "Linux" OR "${OS_NAME}" MATCHES "Android")
@@ -154,6 +166,30 @@ set(ARCHITECTURE_ALPHA32_SOURCES
     ${ARCHITECTURE_ALPHA_SOURCES}
     )
 
+set(ARCHITECTURE_PPC_SOURCES
+    Sources/Architecture/PowerPC/SoftwareSingleStep.cpp
+    )
+
+set(ARCHITECTURE_PPC64_SOURCES
+    ${ARCHITECTURE_PPC_SOURCES}
+    )
+
+set(ARCHITECTURE_PARISC_SOURCES
+    Sources/Architecture/PARISC/SoftwareSingleStep.cpp
+    )
+
+set(ARCHITECTURE_PARISC64_SOURCES
+    ${ARCHITECTURE_PARISC_SOURCES}
+    )
+
+set(ARCHITECTURE_SPARC_SOURCES
+    Sources/Architecture/SPARC/SoftwareSingleStep.cpp
+    )
+
+set(ARCHITECTURE_SPARC64_SOURCES
+    ${ARCHITECTURE_SPARC_SOURCES}
+    )
+
 set(HOST_COMMON_SOURCES
     Sources/Host/Common/Channel.cpp
     Sources/Host/Common/Platform.cpp
@@ -208,6 +244,35 @@ set(HOST_OSF1_SOURCES
     Sources/Host/OSF1/${ARCH_NAME}/Mach${ARCH_NAME}.cpp
     )
 
+set(HOST_SYSV_SOURCES
+    ${HOST_POSIX_SOURCES}
+    Sources/Host/SystemV/ProcFS.cpp
+    )
+
+set(HOST_AIX_SOURCES
+    ${HOST_SYSV_SOURCES}
+    )
+
+set(HOST_HPUX_SOURCES
+    ${HOST_SYSV_SOURCES}
+    )
+
+set(HOST_IRIX_SOURCES
+    ${HOST_SYSV_SOURCES}
+    )
+
+set(HOST_Solaris_SOURCES
+    ${HOST_SYSV_SOURCES}
+    )
+
+set(HOST_OpenServer_SOURCES
+    ${HOST_SYSV_SOURCES}
+    )
+
+set(HOST_UnixWare_SOURCES
+    ${HOST_SYSV_SOURCES}
+    )
+
 set(HOST_Windows_SOURCES
     Sources/Host/Windows/File.cpp
     Sources/Host/Windows/Platform.cpp
@@ -226,6 +291,18 @@ set(TARGET_POSIX_ELF_SOURCES
 
 set(TARGET_POSIX_ECOFF_SOURCES
     Sources/Target/POSIX/ECOFFProcess.cpp
+    )
+
+set(TARGET_POSIX_XCOFF_SOURCES
+    Sources/Target/POSIX/XCOFFProcess.cpp
+    )
+
+set(TARGET_POSIX_SOM_SOURCES
+    Sources/Target/POSIX/SOMProcess.cpp
+    )
+
+set(TARGET_POSIX_COFF_SOURCES
+    Sources/Target/POSIX/COFFProcess.cpp
     )
 
 set(TARGET_POSIX_SOURCES
@@ -274,6 +351,54 @@ set(TARGET_OSF1_SOURCES
     Sources/Target/OSF1/Process.cpp
     Sources/Target/OSF1/${ARCH_NAME}/Process${ARCH_NAME}.cpp
     Sources/Target/OSF1/Thread.cpp
+    )
+
+set(TARGET_AIX_SOURCES
+    ${TARGET_POSIX_XCOFF_SOURCES}
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/AIX/Process.cpp
+    Sources/Target/AIX/Thread.cpp
+    )
+
+set(TARGET_HPUX_SOURCES
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/HPUX/Process.cpp
+    Sources/Target/HPUX/Thread.cpp
+    )
+
+# HP-UX uses SOM on PA-RISC, ELF on Itanium
+if (ARCH_NAME MATCHES "PARISC")
+  list(APPEND TARGET_HPUX_SOURCES ${TARGET_POSIX_SOM_SOURCES})
+else()
+  list(APPEND TARGET_HPUX_SOURCES ${TARGET_POSIX_ELF_SOURCES})
+endif()
+
+set(TARGET_IRIX_SOURCES
+    ${TARGET_POSIX_ELF_SOURCES}
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/IRIX/Process.cpp
+    Sources/Target/IRIX/Thread.cpp
+    )
+
+set(TARGET_Solaris_SOURCES
+    ${TARGET_POSIX_ELF_SOURCES}
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/Solaris/Process.cpp
+    Sources/Target/Solaris/Thread.cpp
+    )
+
+set(TARGET_OpenServer_SOURCES
+    ${TARGET_POSIX_ELF_SOURCES}
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/OpenServer/Process.cpp
+    Sources/Target/OpenServer/Thread.cpp
+    )
+
+set(TARGET_UnixWare_SOURCES
+    ${TARGET_POSIX_ELF_SOURCES}
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/UnixWare/Process.cpp
+    Sources/Target/UnixWare/Thread.cpp
     )
 
 set(TARGET_Windows_SOURCES
@@ -339,6 +464,34 @@ set(UTILS_Hurd_SOURCES
     ${UTILS_POSIX_SOURCES}
     )
 
+set(UTILS_AIX_SOURCES
+    ${UTILS_POSIX_SOURCES}
+    )
+
+set(UTILS_HPUX_SOURCES
+    ${UTILS_POSIX_SOURCES}
+    )
+
+set(UTILS_IRIX_SOURCES
+    ${SUPPORT_POSIX_ELF_SOURCES}
+    ${UTILS_POSIX_SOURCES}
+    )
+
+set(UTILS_Solaris_SOURCES
+    ${SUPPORT_POSIX_ELF_SOURCES}
+    ${UTILS_POSIX_SOURCES}
+    )
+
+set(UTILS_OpenServer_SOURCES
+    ${SUPPORT_POSIX_ELF_SOURCES}
+    ${UTILS_POSIX_SOURCES}
+    )
+
+set(UTILS_UnixWare_SOURCES
+    ${SUPPORT_POSIX_ELF_SOURCES}
+    ${UTILS_POSIX_SOURCES}
+    )
+
 set(UTILS_Windows_SOURCES
     Sources/Utils/Windows/Daemon.cpp
     Sources/Utils/Windows/FaultHandler.cpp
@@ -383,6 +536,27 @@ set(CORE_ALPHA_SOURCES
     )
 
 set(CORE_ALPHA32_SOURCES ${CORE_ALPHA_SOURCES})
+
+set(CORE_PPC_SOURCES
+    Sources/Core/PowerPC/HardwareBreakpointManager.cpp
+    Sources/Core/PowerPC/SoftwareBreakpointManager.cpp
+    )
+
+set(CORE_PPC64_SOURCES ${CORE_PPC_SOURCES})
+
+set(CORE_PARISC_SOURCES
+    Sources/Core/PARISC/HardwareBreakpointManager.cpp
+    Sources/Core/PARISC/SoftwareBreakpointManager.cpp
+    )
+
+set(CORE_PARISC64_SOURCES ${CORE_PARISC_SOURCES})
+
+set(CORE_SPARC_SOURCES
+    Sources/Core/SPARC/HardwareBreakpointManager.cpp
+    Sources/Core/SPARC/SoftwareBreakpointManager.cpp
+    )
+
+set(CORE_SPARC64_SOURCES ${CORE_SPARC_SOURCES})
 
 set(HOST_SOURCES ${HOST_COMMON_SOURCES} ${HOST_${OS_NAME}_SOURCES})
 set(TARGET_SOURCES ${TARGET_COMMON_SOURCES} ${TARGET_${OS_NAME}_SOURCES})

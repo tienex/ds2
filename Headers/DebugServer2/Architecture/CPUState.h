@@ -30,6 +30,14 @@
 #include "DebugServer2/Architecture/MIPS64/CPUState.h"
 #elif defined(ARCH_ALPHA) || defined(ARCH_ALPHA32)
 #include "DebugServer2/Architecture/Alpha/CPUState.h"
+#elif defined(ARCH_PPC)
+#include "DebugServer2/Architecture/PowerPC/CPUState.h"
+#elif defined(ARCH_PPC64)
+#include "DebugServer2/Architecture/PowerPC/CPUState.h"
+#elif defined(ARCH_PARISC) || defined(ARCH_PARISC64)
+#include "DebugServer2/Architecture/PARISC/CPUState.h"
+#elif defined(ARCH_SPARC) || defined(ARCH_SPARC64)
+#include "DebugServer2/Architecture/SPARC/CPUState.h"
 #else
 #error "Architecture not supported."
 #endif
@@ -52,6 +60,14 @@ using MIPS::CPUState;
 using MIPS64::CPUState;
 #elif defined(ARCH_ALPHA) || defined(ARCH_ALPHA32)
 using Alpha::CPUState;
+#elif defined(ARCH_PPC)
+using PowerPC::CPUState;
+#elif defined(ARCH_PPC64)
+using PowerPC::CPUState;
+#elif defined(ARCH_PARISC) || defined(ARCH_PARISC64)
+using PARISC::CPUState;
+#elif defined(ARCH_SPARC) || defined(ARCH_SPARC64)
+using SPARC::CPUState;
 #else
 #error "Architecture not supported."
 #endif
