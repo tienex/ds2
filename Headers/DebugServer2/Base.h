@@ -44,11 +44,13 @@ typedef SSIZE_T ssize_t;
 #define OS_FREEBSD
 #elif defined(__APPLE__)
 #define OS_DARWIN
+#elif defined(__GNU__)
+#define OS_HURD
 #else
 #error "Target not supported."
 #endif
 
-#if defined(OS_LINUX) || defined(OS_FREEBSD) || defined(OS_DARWIN)
+#if defined(OS_LINUX) || defined(OS_FREEBSD) || defined(OS_DARWIN) || defined(OS_HURD)
 #define OS_POSIX
 #endif
 

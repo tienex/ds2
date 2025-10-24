@@ -177,6 +177,12 @@ set(HOST_FreeBSD_SOURCES
     Sources/Host/FreeBSD/${ARCH_NAME}/PTrace${ARCH_NAME}.cpp
     )
 
+set(HOST_Hurd_SOURCES
+    ${HOST_POSIX_SOURCES}
+    Sources/Host/Hurd/Mach.cpp
+    Sources/Host/Hurd/${ARCH_NAME}/Mach${ARCH_NAME}.cpp
+    )
+
 set(HOST_Windows_SOURCES
     Sources/Host/Windows/File.cpp
     Sources/Host/Windows/Platform.cpp
@@ -223,6 +229,14 @@ set(TARGET_FreeBSD_SOURCES
     Sources/Target/FreeBSD/Process.cpp
     Sources/Target/FreeBSD/${ARCH_NAME}/Process${ARCH_NAME}.cpp
     Sources/Target/FreeBSD/Thread.cpp
+    )
+
+set(TARGET_Hurd_SOURCES
+    ${TARGET_POSIX_ELF_SOURCES}
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/Hurd/Process.cpp
+    Sources/Target/Hurd/${ARCH_NAME}/Process${ARCH_NAME}.cpp
+    Sources/Target/Hurd/Thread.cpp
     )
 
 set(TARGET_Windows_SOURCES
@@ -274,6 +288,11 @@ set(UTILS_Darwin_SOURCES
     )
 
 set(UTILS_FreeBSD_SOURCES
+    ${SUPPORT_POSIX_ELF_SOURCES}
+    ${UTILS_POSIX_SOURCES}
+    )
+
+set(UTILS_Hurd_SOURCES
     ${SUPPORT_POSIX_ELF_SOURCES}
     ${UTILS_POSIX_SOURCES}
     )
