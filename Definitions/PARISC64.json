@@ -1,0 +1,104 @@
+{
+  "name": "PA-RISC 64",
+  "description": "HP Precision Architecture RISC 2.0 (PA-RISC 2.0 64-bit)",
+  "register_sets": [
+    {
+      "name": "General Purpose Registers",
+      "registers": [
+        {"name": "gr0", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r0"},
+        {"name": "gr1", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r1"},
+        {"name": "gr2", "size": 8, "encoding": "uint64", "format": "hex", "altname": "rp"},
+        {"name": "gr3", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r3"},
+        {"name": "gr4", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r4"},
+        {"name": "gr5", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r5"},
+        {"name": "gr6", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r6"},
+        {"name": "gr7", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r7"},
+        {"name": "gr8", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r8"},
+        {"name": "gr9", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r9"},
+        {"name": "gr10", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r10"},
+        {"name": "gr11", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r11"},
+        {"name": "gr12", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r12"},
+        {"name": "gr13", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r13"},
+        {"name": "gr14", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r14"},
+        {"name": "gr15", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r15"},
+        {"name": "gr16", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r16"},
+        {"name": "gr17", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r17"},
+        {"name": "gr18", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r18"},
+        {"name": "gr19", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r19"},
+        {"name": "gr20", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r20"},
+        {"name": "gr21", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r21"},
+        {"name": "gr22", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r22"},
+        {"name": "gr23", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r23"},
+        {"name": "gr24", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r24"},
+        {"name": "gr25", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r25"},
+        {"name": "gr26", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r26"},
+        {"name": "gr27", "size": 8, "encoding": "uint64", "format": "hex", "altname": "dp"},
+        {"name": "gr28", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r28"},
+        {"name": "gr29", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r29"},
+        {"name": "gr30", "size": 8, "encoding": "uint64", "format": "hex", "altname": "sp"},
+        {"name": "gr31", "size": 8, "encoding": "uint64", "format": "hex", "altname": "r31"}
+      ]
+    },
+    {
+      "name": "Space Registers",
+      "registers": [
+        {"name": "sr0", "size": 8, "encoding": "uint64", "format": "hex"},
+        {"name": "sr1", "size": 8, "encoding": "uint64", "format": "hex"},
+        {"name": "sr2", "size": 8, "encoding": "uint64", "format": "hex"},
+        {"name": "sr3", "size": 8, "encoding": "uint64", "format": "hex"},
+        {"name": "sr4", "size": 8, "encoding": "uint64", "format": "hex"},
+        {"name": "sr5", "size": 8, "encoding": "uint64", "format": "hex"},
+        {"name": "sr6", "size": 8, "encoding": "uint64", "format": "hex"},
+        {"name": "sr7", "size": 8, "encoding": "uint64", "format": "hex"}
+      ]
+    },
+    {
+      "name": "Special Registers",
+      "registers": [
+        {"name": "iaoq_head", "size": 8, "encoding": "uint64", "format": "hex"},
+        {"name": "iaoq_tail", "size": 8, "encoding": "uint64", "format": "hex"},
+        {"name": "iasq_head", "size": 8, "encoding": "uint64", "format": "hex"},
+        {"name": "iasq_tail", "size": 8, "encoding": "uint64", "format": "hex"},
+        {"name": "sar", "size": 8, "encoding": "uint64", "format": "hex"},
+        {"name": "psw", "size": 8, "encoding": "uint64", "format": "hex"}
+      ]
+    },
+    {
+      "name": "Floating Point Registers",
+      "registers": [
+        {"name": "fr0", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr1", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr2", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr3", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr4", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr5", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr6", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr7", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr8", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr9", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr10", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr11", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr12", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr13", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr14", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr15", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr16", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr17", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr18", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr19", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr20", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr21", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr22", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr23", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr24", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr25", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr26", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr27", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr28", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr29", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr30", "size": 8, "encoding": "ieee754", "format": "float"},
+        {"name": "fr31", "size": 8, "encoding": "ieee754", "format": "float"}
+      ]
+    }
+  ]
+}

@@ -10,79 +10,94 @@
 
 #pragma once
 
-#include "DebugServer2/Base.h"
-
-#if defined(ARCH_PARISC) || defined(ARCH_PARISC64)
-
-#include <cstdint>
+#include "DebugServer2/Architecture/CPUState.h"
 
 namespace ds2 {
 namespace Architecture {
 namespace PARISC {
 
-//
-// PA-RISC CPU State
-//
-// Supports both 32-bit PA-RISC and 64-bit PA-RISC (PA-RISC 2.0)
-//
-
-#if defined(ARCH_PARISC64)
-using reg_t = uint64_t;
-#else
-using reg_t = uint32_t;
-#endif
+// PA-RISC 1.0 and 1.1 (32-bit)
+// HP Precision Architecture RISC
+// Used in HP 9000 workstations and servers
 
 struct CPUState {
-  // General purpose registers (gr0-gr31)
-  union {
-    reg_t regs[32];
-    struct {
-      reg_t gr0, gr1, gr2, gr3, gr4, gr5, gr6, gr7;
-      reg_t gr8, gr9, gr10, gr11, gr12, gr13, gr14, gr15;
-      reg_t gr16, gr17, gr18, gr19, gr20, gr21, gr22, gr23;
-      reg_t gr24, gr25, gr26, gr27, gr28, gr29, gr30, gr31;
-    };
-    struct {
-      reg_t zero, r1, rp, r3, r4, r5, r6, r7;
-      reg_t r8, r9, r10, r11, r12, r13, r14, r15;
-      reg_t r16, r17, r18, r19, r20, r21, r22, arg3;
-      reg_t arg2, arg1, arg0, dp, r28, r29, sp, r31;
-    };
+  // General Purpose Registers (32-bit)
+  // gr0 is hardwired to zero
+  // gr1 is typically used as a temporary
+  // gr2 is the return pointer (rp)
+  // gr27 is the data pointer (dp)
+  // gr30 is the stack pointer (sp)
+  // gr31 is used for millicode return
+  struct GPRegisterStruct {
+    uint32_t regs[32]; // gr0-gr31
   } gp;
 
-  // Floating-point registers (fr0-fr31, 64-bit IEEE 754)
-  union {
-    double regs[32];
-    struct {
-      double fr0, fr1, fr2, fr3, fr4, fr5, fr6, fr7;
-      double fr8, fr9, fr10, fr11, fr12, fr13, fr14, fr15;
-      double fr16, fr17, fr18, fr19, fr20, fr21, fr22, fr23;
-      double fr24, fr25, fr26, fr27, fr28, fr29, fr30, fr31;
-    };
-  } fp;
+  // Space Registers (segmented addressing)
+  // sr0-sr3 are used for different address spaces
+  // sr4-sr7 are typically used for user space
+  struct SpaceRegisterStruct {
+    uint32_t regs[8]; // sr0-sr7
+  } sr;
 
-  // Special purpose registers
-  reg_t iaoq_head;  // Instruction address offset queue head (PC)
-  reg_t iaoq_tail;  // Instruction address offset queue tail (PC+4)
-  reg_t iasq_head;  // Instruction address space queue head
-  reg_t iasq_tail;  // Instruction address space queue tail
-  reg_t sar;        // Shift amount register
-  reg_t pcoq_head;  // PC offset queue head (legacy name)
-  reg_t pcoq_tail;  // PC offset queue tail (legacy name)
-  reg_t pcsq_head;  // PC space queue head (legacy name)
-  reg_t pcsq_tail;  // PC space queue tail (legacy name)
-  reg_t cr0;        // Recovery counter
-  reg_t cr24;       // Kernel register
-  reg_t cr25;       // Low kernel register
-  reg_t cr26;       // High kernel register
-  reg_t cr27;       // Thread pointer
-  reg_t cr28;       // Shadow registers
+  // Special Registers
+  struct SpecialRegisterStruct {
+    uint32_t iaoq_head; // Instruction Address Offset Queue (head)
+    uint32_t iaoq_tail; // Instruction Address Offset Queue (tail)
+    uint32_t iasq_head; // Instruction Address Space Queue (head)
+    uint32_t iasq_tail; // Instruction Address Space Queue (tail)
+    uint32_t ipsw;      // Interrupt PSW
+    uint32_t psw;       // Program Status Word
+    uint32_t sar;       // Shift Amount Register
+    uint32_t pcoq_head; // PC Offset Queue (head)
+    uint32_t pcoq_tail; // PC Offset Queue (tail)
+    uint32_t pcsq_head; // PC Space Queue (head)
+    uint32_t pcsq_tail; // PC Space Queue (tail)
+    uint32_t eiem;      // External Interrupt Enable Mask
+    uint32_t iir;       // Interrupt Instruction Register
+    uint32_t isr;       // Interrupt Space Register
+    uint32_t ior;       // Interrupt Offset Register
+    uint32_t iva;       // Interrupt Vector Address
+    uint32_t rctr;      // Recovery Counter
+  } special;
 
-  inline void clear() { memset(this, 0, sizeof(*this)); }
+  // Control Registers
+  struct ControlRegisterStruct {
+    uint32_t cr[32]; // cr0-cr31 (various control functions)
+  } cr;
+
+  // Floating-Point Registers (64-bit double precision)
+  // PA-RISC FPU has 32 double-precision registers
+  // Can also be accessed as 64 single-precision
+  union FPRegisterFile {
+    double d[32];   // Double precision (native)
+    float s[64];    // Single precision (paired)
+    uint64_t l[32]; // Raw 64-bit values
+  } fpu;
+
+  // FPU Status
+  struct FPUStatusStruct {
+    uint32_t fpsr; // FP Status Register
+  } fpu_status;
+
+  CPUState() { clear(); }
+
+  void clear() { memset(this, 0, sizeof(*this)); }
+
+  // Helper accessors
+  inline uint32_t gr0() const { return 0; } // Always zero
+  inline uint32_t rp() const { return gp.regs[2]; }
+  inline uint32_t sp() const { return gp.regs[30]; }
+  inline uint32_t dp() const { return gp.regs[27]; }
+  inline uint32_t pc() const { return special.iaoq_head; }
+
+  inline void setPC(uint32_t pc) {
+    special.iaoq_head = pc;
+    special.iaoq_tail = pc + 4;
+  }
+
+  inline void setStackPointer(uint32_t sp) { gp.regs[30] = sp; }
 };
 
 } // namespace PARISC
 } // namespace Architecture
 } // namespace ds2
-
-#endif // ARCH_PARISC || ARCH_PARISC64
