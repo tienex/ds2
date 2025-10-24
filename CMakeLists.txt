@@ -305,12 +305,14 @@ set(CORE_X86_SOURCES
     )
 
 set(CORE_MIPS_SOURCES
+    Sources/Core/MIPS/HardwareBreakpointManager.cpp
     Sources/Core/MIPS/SoftwareBreakpointManager.cpp
     )
 
 set(CORE_ARM64_SOURCES ${CORE_ARM_SOURCES})
 set(CORE_X86_64_SOURCES ${CORE_X86_SOURCES})
 set(CORE_MIPS64_SOURCES
+    Sources/Core/MIPS64/HardwareBreakpointManager.cpp
     Sources/Core/MIPS64/SoftwareBreakpointManager.cpp
     )
 

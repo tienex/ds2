@@ -58,6 +58,10 @@ enum {
 extern GDBDescriptor const &GetGDBDescriptor();
 extern LLDBDescriptor const &GetLLDBDescriptor();
 
+// Exported descriptors (for compatibility with ProcessBase)
+extern GDBDescriptor const GDB;
+extern LLDBDescriptor const LLDB;
+
 } // namespace MIPS64
 } // namespace Architecture
 } // namespace ds2

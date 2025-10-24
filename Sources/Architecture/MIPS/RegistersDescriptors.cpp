@@ -46,6 +46,10 @@ LLDBDescriptor const &GetLLDBDescriptor() {
   return sLLDBDescriptor;
 }
 
+// Exported descriptors (for compatibility with ProcessBase)
+GDBDescriptor const GDB = sGDBDescriptor;
+LLDBDescriptor const LLDB = sLLDBDescriptor;
+
 } // namespace MIPS
 } // namespace Architecture
 } // namespace ds2
