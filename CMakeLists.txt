@@ -246,6 +246,13 @@ set(HOST_OpenBSD_SOURCES
     Sources/Host/OpenBSD/${ARCH_NAME}/PTrace${ARCH_NAME}.cpp
     )
 
+set(HOST_DragonFly_SOURCES
+    ${HOST_POSIX_SOURCES}
+    Sources/Host/DragonFly/Platform.cpp
+    Sources/Host/DragonFly/PTrace.cpp
+    Sources/Host/DragonFly/${ARCH_NAME}/PTrace${ARCH_NAME}.cpp
+    )
+
 set(HOST_Hurd_SOURCES
     ${HOST_POSIX_SOURCES}
     Sources/Host/Mach/Mach.cpp
@@ -364,6 +371,14 @@ set(TARGET_OpenBSD_SOURCES
     ${TARGET_POSIX_SOURCES}
     Sources/Target/OpenBSD/Process.cpp
     Sources/Target/OpenBSD/Thread.cpp
+    )
+
+set(TARGET_DragonFly_SOURCES
+    ${TARGET_POSIX_ELF_SOURCES}
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/DragonFly/Process.cpp
+    Sources/Target/DragonFly/${ARCH_NAME}/Process${ARCH_NAME}.cpp
+    Sources/Target/DragonFly/Thread.cpp
     )
 
 set(TARGET_Hurd_SOURCES
@@ -508,6 +523,11 @@ set(UTILS_NetBSD_SOURCES
     )
 
 set(UTILS_OpenBSD_SOURCES
+    ${SUPPORT_POSIX_ELF_SOURCES}
+    ${UTILS_POSIX_SOURCES}
+    )
+
+set(UTILS_DragonFly_SOURCES
     ${SUPPORT_POSIX_ELF_SOURCES}
     ${UTILS_POSIX_SOURCES}
     )
