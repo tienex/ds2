@@ -1,0 +1,12 @@
+{
+  "namespace" : "OpenRISC",
+  "register-sets" : {
+    "gpr" : { "bit-size" : 32, "registers" : {
+      "r0" : { "description" : "Always zero" },
+      "r1" : { "alternate-name" : "sp", "generic-name" : "sp" },
+      "r2" : { "alternate-name" : "fp", "generic-name" : "fp" },
+      "r9" : { "alternate-name" : "lr" }
+    }}
+  },
+  "gdb-defs" : { "architecture" : "or1k" }
+}

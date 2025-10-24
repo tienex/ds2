@@ -1,0 +1,7 @@
+{
+  "namespace" : "Xtensa",
+  "register-sets" : {
+    "ar" : { "bit-size" : 32, "description" : "Address registers a0-a15" }
+  },
+  "gdb-defs" : { "architecture" : "xtensa" }
+}

@@ -1,0 +1,7 @@
+{
+  "namespace" : "ARC",
+  "register-sets" : {
+    "gpr" : { "bit-size" : 32, "description" : "r0-r31" }
+  },
+  "gdb-defs" : { "architecture" : "arc" }
+}
