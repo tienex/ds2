@@ -12,6 +12,7 @@
 #include "DebugServer2/Host/Platform.h"
 #include "DebugServer2/Target/Thread.h"
 #include "DebugServer2/Utils/Log.h"
+#include "DebugServer2/Architecture/MIPS/ABI.h"
 
 #include <cstdlib>
 #include <sys/mman.h>
@@ -32,45 +33,106 @@ static inline void InitCodeVector(ByteVector &codestr, T const &init) {
   codestr.assign(bptr, eptr);
 }
 
+// Detect MIPS ABI at runtime based on ELF flags
+static Architecture::MIPS::ABI DetectProcessABI() {
+  // For now, use compile-time detection
+  // In a full implementation, we would read the ELF header of the target process
+  return Architecture::MIPS::DetectABI();
+}
+
+// Get syscall number based on ABI
+static int GetSyscallNumber(Architecture::MIPS::ABI abi, const char *name) {
+  // Syscall numbers vary by ABI
+  // O32: mmap=4090, munmap=4091
+  // N32: mmap=6009, munmap=6011
+  // N64: mmap=5009, munmap=5011
+
+  if (strcmp(name, "mmap") == 0) {
+    switch (abi) {
+    case Architecture::MIPS::ABI::O32:
+      return 4090;
+    case Architecture::MIPS::ABI::N32:
+      return 6009;
+    case Architecture::MIPS::ABI::N64:
+      return 5009;
+    default:
+      return __NR_mmap; // fallback
+    }
+  } else if (strcmp(name, "munmap") == 0) {
+    switch (abi) {
+    case Architecture::MIPS::ABI::O32:
+      return 4091;
+    case Architecture::MIPS::ABI::N32:
+      return 6011;
+    case Architecture::MIPS::ABI::N64:
+      return 5011;
+    default:
+      return __NR_munmap; // fallback
+    }
+  }
+  return -1;
+}
+
 //
-// MIPS syscall injection code
-// MIPS calling convention: a0-a3 for first 4 args, syscall number in v0
+// MIPS syscall injection code - O32 ABI
+// O32: a0-a3 for first 4 args, rest on stack, syscall number in v0
 //
 
-// mmap syscall for MIPS
-// li   $v0, __NR_mmap      # syscall number
-// li   $a0, 0              # addr = NULL
-// li   $a1, size           # length
-// li   $a2, prot           # prot
-// li   $a3, flags          # flags
-// li   $a4, -1             # fd = -1
-// li   $a5, 0              # offset = 0
-// syscall
-// break 1                  # trap to debugger
+// mmap syscall for MIPS O32
+// For O32, mmap has 6 args but only 4 fit in registers
+// Args 5-6 (fd, offset) need to be on stack
+// However, for simplicity we'll use fd=-1 and offset=0
+static uint32_t const gMIPSO32MmapCode[] = {
+    0x27bdffe0,  // addiu $sp, $sp, -32  # allocate stack
+    0xafbf001c,  // sw    $ra, 28($sp)   # save return address
+    0x24020000,  // li    $v0, 0         # syscall number (patched)
+    0x24040000,  // li    $a0, 0         # addr = NULL
+    0x24050000,  // li    $a1, 0         # size (patched)
+    0x24060000,  // li    $a2, 0         # prot (patched)
+    0x24070000,  // li    $a3, 0         # flags (patched)
+    0x2408ffff,  // li    $t0, -1        # fd = -1
+    0xafa80010,  // sw    $t0, 16($sp)   # store fd on stack (arg5)
+    0x24090000,  // li    $t1, 0         # offset = 0
+    0xafa90014,  // sw    $t1, 20($sp)   # store offset on stack (arg6)
+    0x0000000c,  // syscall
+    0x8fbf001c,  // lw    $ra, 28($sp)   # restore return address
+    0x27bd0020,  // addiu $sp, $sp, 32   # deallocate stack
+    0x0000000d,  // break 1
+};
 
-static uint32_t const gMIPSMmapCode[] = {
-    0x24020000,  // li   $v0, 0x0000 (will be patched with __NR_mmap)
-    0x24040000,  // li   $a0, 0      (addr = NULL)
-    0x24050000,  // li   $a1, 0x0000 (will be patched with size)
-    0x24060000,  // li   $a2, 0x0000 (will be patched with prot)
-    0x24070000,  // li   $a3, 0x0000 (will be patched with flags)
-    0x2408ffff,  // li   $t0, -1     (fd = -1)
-    0x24090000,  // li   $t1, 0      (offset = 0)
+// munmap syscall for MIPS O32
+static uint32_t const gMIPSO32MunmapCode[] = {
+    0x24020000,  // li   $v0, 0      # syscall number (patched)
+    0x24040000,  // li   $a0, 0      # addr (patched)
+    0x24050000,  // li   $a1, 0      # size (patched)
     0x0000000c,  // syscall
     0x0000000d,  // break 1
 };
 
-// munmap syscall for MIPS
-// li   $v0, __NR_munmap
-// li   $a0, addr
-// li   $a1, size
-// syscall
-// break 1
+//
+// MIPS syscall injection code - N32/N64 ABI
+// N32/N64: a0-a7 for first 8 args, syscall number in v0
+//
 
-static uint32_t const gMIPSMunmapCode[] = {
-    0x24020000,  // li   $v0, 0x0000 (will be patched with __NR_munmap)
-    0x24040000,  // li   $a0, 0x0000 (will be patched with addr)
-    0x24050000,  // li   $a1, 0x0000 (will be patched with size)
+// mmap syscall for MIPS N32/N64
+// All 6 args fit in registers
+static uint32_t const gMIPSN32N64MmapCode[] = {
+    0x24020000,  // li   $v0, 0      # syscall number (patched)
+    0x24040000,  // li   $a0, 0      # addr = NULL
+    0x24050000,  // li   $a1, 0      # size (patched)
+    0x24060000,  // li   $a2, 0      # prot (patched)
+    0x24070000,  // li   $a3, 0      # flags (patched)
+    0x2408ffff,  // li   $a4, -1     # fd = -1
+    0x24090000,  // li   $a5, 0      # offset = 0
+    0x0000000c,  // syscall
+    0x0000000d,  // break 1
+};
+
+// munmap syscall for MIPS N32/N64 (same as O32)
+static uint32_t const gMIPSN32N64MunmapCode[] = {
+    0x24020000,  // li   $v0, 0      # syscall number (patched)
+    0x24040000,  // li   $a0, 0      # addr (patched)
+    0x24050000,  // li   $a1, 0      # size (patched)
     0x0000000c,  // syscall
     0x0000000d,  // break 1
 };
@@ -81,25 +143,45 @@ static inline void MIPSSetLIImmediate(uint32_t *insn, uint16_t value) {
 
 static void MIPSPrepareMmapCode(size_t size, int protection,
                                 ByteVector &codestr) {
-  InitCodeVector(codestr, gMIPSMmapCode);
+  Architecture::MIPS::ABI abi = DetectProcessABI();
+  int syscall_nr = GetSyscallNumber(abi, "mmap");
 
-  uint32_t *code = reinterpret_cast<uint32_t *>(&codestr[0]);
+  if (abi == Architecture::MIPS::ABI::O32) {
+    InitCodeVector(codestr, gMIPSO32MmapCode);
+    uint32_t *code = reinterpret_cast<uint32_t *>(&codestr[0]);
 
-  MIPSSetLIImmediate(code + 0, __NR_mmap);
-  MIPSSetLIImmediate(code + 2, size & 0xffff);
-  MIPSSetLIImmediate(code + 3, protection & 0xffff);
-  MIPSSetLIImmediate(code + 4, (MAP_ANON | MAP_PRIVATE) & 0xffff);
+    MIPSSetLIImmediate(code + 2, syscall_nr & 0xffff);        // syscall number
+    MIPSSetLIImmediate(code + 4, size & 0xffff);              // size
+    MIPSSetLIImmediate(code + 5, protection & 0xffff);        // prot
+    MIPSSetLIImmediate(code + 6, (MAP_ANON | MAP_PRIVATE) & 0xffff); // flags
+  } else {
+    // N32, N64, or other ABIs
+    InitCodeVector(codestr, gMIPSN32N64MmapCode);
+    uint32_t *code = reinterpret_cast<uint32_t *>(&codestr[0]);
+
+    MIPSSetLIImmediate(code + 0, syscall_nr & 0xffff);        // syscall number
+    MIPSSetLIImmediate(code + 2, size & 0xffff);              // size
+    MIPSSetLIImmediate(code + 3, protection & 0xffff);        // prot
+    MIPSSetLIImmediate(code + 4, (MAP_ANON | MAP_PRIVATE) & 0xffff); // flags
+  }
 }
 
 static void MIPSPrepareMunmapCode(uint32_t address, size_t size,
                                   ByteVector &codestr) {
-  InitCodeVector(codestr, gMIPSMunmapCode);
+  Architecture::MIPS::ABI abi = DetectProcessABI();
+  int syscall_nr = GetSyscallNumber(abi, "munmap");
+
+  if (abi == Architecture::MIPS::ABI::O32) {
+    InitCodeVector(codestr, gMIPSO32MunmapCode);
+  } else {
+    InitCodeVector(codestr, gMIPSN32N64MunmapCode);
+  }
 
   uint32_t *code = reinterpret_cast<uint32_t *>(&codestr[0]);
 
-  MIPSSetLIImmediate(code + 0, __NR_munmap);
-  MIPSSetLIImmediate(code + 1, address & 0xffff);
-  MIPSSetLIImmediate(code + 2, size & 0xffff);
+  MIPSSetLIImmediate(code + 0, syscall_nr & 0xffff);  // syscall number
+  MIPSSetLIImmediate(code + 1, address & 0xffff);     // addr
+  MIPSSetLIImmediate(code + 2, size & 0xffff);        // size
 }
 
 } // namespace

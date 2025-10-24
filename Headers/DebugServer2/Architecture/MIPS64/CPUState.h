@@ -24,6 +24,47 @@ namespace MIPS64 {
 
 #pragma pack(push, 1)
 
+//
+// MIPS64 CPU State
+//
+// This structure represents the complete state of a MIPS64 CPU,
+// including general-purpose registers (64-bit), special registers,
+// FPU, DSP, and MSA extensions.
+//
+// ABI Register Conventions:
+//
+// N32 ABI (New 32-bit for MIPS64):
+//   - Uses 64-bit registers but 32-bit pointers
+//   - a0-a7 ($4-$11): First 8 integer arguments
+//   - v0-v1 ($2-$3): Return values
+//   - t0-t3 ($12-$15): Temporaries (caller-saved)
+//   - s0-s7 ($16-$23): Saved registers (callee-saved)
+//   - gp ($28): Global pointer
+//   - sp ($29): Stack pointer
+//   - s8 ($30): Frame pointer (if used)
+//   - ra ($31): Return address
+//   - Pointer size: 32 bits
+//   - Register size: 64 bits
+//
+// N64 ABI (New 64-bit):
+//   - Uses 64-bit registers and 64-bit pointers
+//   - a0-a7 ($4-$11): First 8 integer arguments
+//   - v0-v1 ($2-$3): Return values
+//   - t0-t3 ($12-$15): Temporaries (caller-saved)
+//   - s0-s7 ($16-$23): Saved registers (callee-saved)
+//   - gp ($28): Global pointer
+//   - sp ($29): Stack pointer
+//   - s8 ($30): Frame pointer (if used)
+//   - ra ($31): Return address
+//   - Pointer size: 64 bits
+//   - Register size: 64 bits
+//
+// O64 ABI (Original 64-bit, rarely used):
+//   - Like O32 but with 64-bit registers
+//   - a0-a3 ($4-$7): First 4 integer arguments
+//   - Args 5+ passed on stack
+//   - Mostly obsolete, replaced by N64
+//
 struct CPUState {
   union {
     uint64_t regs[32];

@@ -24,6 +24,40 @@ namespace MIPS {
 
 #pragma pack(push, 1)
 
+//
+// MIPS CPU State
+//
+// This structure represents the complete state of a MIPS32 CPU,
+// including general-purpose registers, special registers, FPU,
+// DSP, and MSA extensions.
+//
+// ABI Register Conventions:
+//
+// O32 ABI (Original 32-bit):
+//   - a0-a3 ($4-$7): First 4 integer arguments
+//   - v0-v1 ($2-$3): Return values
+//   - t0-t9 ($8-$15, $24-$25): Temporaries (caller-saved)
+//   - s0-s8 ($16-$23, $30): Saved registers (callee-saved)
+//   - gp ($28): Global pointer
+//   - sp ($29): Stack pointer
+//   - ra ($31): Return address
+//   - Stack args: Args 5+ passed on stack
+//
+// N32/N64 ABIs (New 32/64-bit):
+//   - a0-a7 ($4-$11): First 8 integer arguments
+//   - v0-v1 ($2-$3): Return values
+//   - t0-t3 ($12-$15): Temporaries (caller-saved)
+//   - t4-t9 ($24-$25, $8-$11 reused): Temporaries
+//   - s0-s7 ($16-$23): Saved registers (callee-saved)
+//   - gp ($28): Global pointer
+//   - sp ($29): Stack pointer
+//   - s8 ($30): Frame pointer (if used)
+//   - ra ($31): Return address
+//
+// EABI (Embedded ABI):
+//   - Similar to N32 with optimizations for embedded systems
+//   - Up to 8 argument registers
+//
 struct CPUState {
   union {
     uint32_t regs[32];

@@ -10,6 +10,9 @@
 
 #include "DebugServer2/Host/Platform.h"
 #include "DebugServer2/Base.h"
+#if defined(ARCH_MIPS) || defined(ARCH_MIPS64)
+#include "DebugServer2/Architecture/MIPS/ABI.h"
+#endif
 
 namespace ds2 {
 namespace Host {
@@ -182,6 +185,13 @@ uint32_t Platform::GetCPUFeatures() {
 
   return features;
 }
+
+#if defined(ARCH_MIPS) || defined(ARCH_MIPS64)
+char const *Platform::GetMIPSABI() {
+  Architecture::MIPS::ABI abi = Architecture::MIPS::DetectABI();
+  return Architecture::MIPS::GetABIName(abi);
+}
+#endif
 
 size_t Platform::GetPointerSize() { return sizeof(void *); }
 } // namespace Host
