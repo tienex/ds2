@@ -61,25 +61,48 @@ struct CPUState {
     };
   } fp;
 
-  // Vector registers (AltiVec/VMX, 128-bit)
+  // Vector registers (AltiVec/VMX, 128-bit) - PowerPC G4 (7400) and later
   struct {
-    uint32_t v[4]; // 128-bit vector
+    uint32_t v[4]; // 128-bit vector (quad-word)
   } vr[32];
 
+  // VSX registers (Vector-Scalar Extension) - POWER7 and later
+  // VSX provides vs0-vs63 where vs0-vs31 overlay fp0-fp31 and vr0-vr31
+  struct {
+    uint64_t dw[2]; // 128-bit as two 64-bit doublewords
+  } vsx[64];
+
   // Special purpose registers
-  reg_t pc;     // Program counter (NIP - Next Instruction Pointer)
-  reg_t msr;    // Machine state register
-  reg_t cr;     // Condition register
-  reg_t lr;     // Link register
-  reg_t ctr;    // Count register
-  reg_t xer;    // Fixed-point exception register
+  reg_t pc;      // Program counter (NIP/IAR - Next Instruction Pointer / Instruction Address Register)
+  reg_t msr;     // Machine state register
+  uint32_t cr;   // Condition register (8 x 4-bit fields)
+  reg_t lr;      // Link register
+  reg_t ctr;     // Count register
+  reg_t xer;     // Fixed-point exception register
+
+  // Additional special purpose registers (availability varies by CPU)
+  reg_t dar;     // Data address register (for exceptions)
+  reg_t dsisr;   // Data storage interrupt status register
+  reg_t srr0;    // Save/restore register 0 (return address)
+  reg_t srr1;    // Save/restore register 1 (MSR save)
 
   // Floating-point status and control register
   uint32_t fpscr;
 
-  // Vector status and control register (AltiVec)
+  // Vector status and control register (AltiVec/VMX) - G4 and later
   uint32_t vscr;
   uint32_t vrsave;
+
+  // Segment registers (32-bit PowerPC only)
+#if !defined(ARCH_PPC64)
+  uint32_t sr[16]; // Segment registers sr0-sr15
+#endif
+
+  // Time base registers (read-only in user mode)
+  uint64_t tb;   // Time base (64-bit counter)
+
+  // Processor version register (read-only)
+  uint32_t pvr;  // Processor version register
 
   inline void clear() { memset(this, 0, sizeof(*this)); }
 };
