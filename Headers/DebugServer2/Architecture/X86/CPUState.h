@@ -32,8 +32,21 @@ struct AVXVector {
   uint64_t value[4]; // 256-bit values
 };
 
+struct AVX512Vector {
+  uint64_t value[8]; // 512-bit values
+};
+
 struct X87Register {
   uint8_t data[10];
+};
+
+struct MMXRegister {
+  uint64_t value; // 64-bit MMX register (overlays x87)
+};
+
+struct BNDRegister {
+  uint64_t lower_bound;
+  uint64_t upper_bound;
 };
 
 enum XFeature : uint64_t {
@@ -105,6 +118,44 @@ struct CPUState {
 
   uint64_t xcr0;
 
+  // MMX state (MM0-MM7, overlays x87 ST0-ST7)
+  struct {
+    union {
+      MMXRegister mm[8];      // MM0-MM7 (64-bit each)
+      X87Register st[8];      // Overlays x87 ST0-ST7
+    };
+  } mmx;
+
+  // AVX-512 state (ZMM0-ZMM31, K0-K7)
+  struct {
+    AVX512Vector zmm[8];      // ZMM0-ZMM7 (512-bit each, extends YMM/XMM)
+    // Note: ZMM8-ZMM31 only available in 64-bit mode
+    uint64_t k[8];            // K0-K7 opmask registers (64-bit each)
+  } avx512;
+
+  // MPX (Memory Protection Extensions) - deprecated but included for completeness
+  struct {
+    BNDRegister bnd[4];       // BND0-BND3 bounds registers
+    uint64_t bndcfgu;         // BND configuration register (user)
+    uint64_t bndstatus;       // BND status register
+  } mpx;
+
+  // AMX (Advanced Matrix Extensions) - Intel AMX
+  struct {
+    uint8_t tilecfg[64];      // TILECFG - tile configuration (64 bytes)
+    uint8_t tmm[8][1024];     // TMM0-TMM7 tile registers (up to 1KB each)
+  } amx;
+
+  // CET (Control-flow Enforcement Technology)
+  struct {
+    uint32_t ssp;             // Shadow Stack Pointer
+    uint32_t pl0_ssp;         // PL0 Shadow Stack Pointer
+    uint32_t pl1_ssp;         // PL1 Shadow Stack Pointer
+    uint32_t pl2_ssp;         // PL2 Shadow Stack Pointer
+    uint32_t pl3_ssp;         // PL3 Shadow Stack Pointer
+    uint64_t interrupt_ssp_table; // Interrupt SSP Table
+  } cet;
+
 #if defined(OS_LINUX)
   struct {
     uint32_t orig_eax;
@@ -121,6 +172,11 @@ public:
     std::memset(&avx, 0, sizeof(avx));
     std::memset(&dr, 0, sizeof(dr));
     std::memset(&xcr0, 0, sizeof(xcr0));
+    std::memset(&mmx, 0, sizeof(mmx));
+    std::memset(&avx512, 0, sizeof(avx512));
+    std::memset(&mpx, 0, sizeof(mpx));
+    std::memset(&amx, 0, sizeof(amx));
+    std::memset(&cet, 0, sizeof(cet));
 #if defined(OS_LINUX)
     std::memset(&linux_gp, 0, sizeof(linux_gp));
 #endif
