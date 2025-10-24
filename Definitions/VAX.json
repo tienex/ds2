@@ -1,0 +1,236 @@
+{
+  "namespace" : "VAX",
+  "register-sets" : {
+    "gpr" : {
+      "bit-size" : 32,
+      "registers" : {
+        "r0" : { },
+        "r1" : { },
+        "r2" : { },
+        "r3" : { },
+        "r4" : { },
+        "r5" : { },
+        "r6" : { },
+        "r7" : { },
+        "r8" : { },
+        "r9" : { },
+        "r10" : { },
+        "r11" : { },
+        "r12" : { "alternate-name" : "ap", "description" : "Argument Pointer" },
+        "r13" : { "alternate-name" : "fp", "generic-name" : "fp", "description" : "Frame Pointer" },
+        "r14" : { "alternate-name" : "sp", "generic-name" : "sp", "description" : "Stack Pointer" },
+        "r15" : { "alternate-name" : "pc", "generic-name" : "pc", "description" : "Program Counter" }
+      }
+    },
+    "psl-regs" : {
+      "bit-size" : 32,
+      "registers" : {
+        "psl" : { "description" : "Processor Status Longword" }
+      }
+    },
+    "f-float-regs" : {
+      "bit-size" : 32,
+      "encoding" : "ieee-single",
+      "description" : "F-format floating-point (32-bit single precision)",
+      "registers" : {
+        "f0" : { },
+        "f1" : { },
+        "f2" : { },
+        "f3" : { },
+        "f4" : { },
+        "f5" : { },
+        "f6" : { },
+        "f7" : { },
+        "f8" : { },
+        "f9" : { },
+        "f10" : { },
+        "f11" : { },
+        "f12" : { },
+        "f13" : { },
+        "f14" : { },
+        "f15" : { }
+      }
+    },
+    "d-float-regs" : {
+      "bit-size" : 64,
+      "encoding" : "ieee-double",
+      "description" : "D-format floating-point (64-bit double precision)",
+      "registers" : {
+        "d0" : { },
+        "d1" : { },
+        "d2" : { },
+        "d3" : { },
+        "d4" : { },
+        "d5" : { },
+        "d6" : { },
+        "d7" : { },
+        "d8" : { },
+        "d9" : { },
+        "d10" : { },
+        "d11" : { },
+        "d12" : { },
+        "d13" : { },
+        "d14" : { },
+        "d15" : { }
+      }
+    },
+    "g-float-regs" : {
+      "bit-size" : 64,
+      "encoding" : "ieee-double",
+      "description" : "G-format floating-point (64-bit extended double precision, VAX-11/750+)",
+      "registers" : {
+        "g0" : { },
+        "g1" : { },
+        "g2" : { },
+        "g3" : { },
+        "g4" : { },
+        "g5" : { },
+        "g6" : { },
+        "g7" : { },
+        "g8" : { },
+        "g9" : { },
+        "g10" : { },
+        "g11" : { },
+        "g12" : { },
+        "g13" : { },
+        "g14" : { },
+        "g15" : { }
+      }
+    },
+    "h-float-regs" : {
+      "bit-size" : 128,
+      "encoding" : "ieee-quad",
+      "description" : "H-format floating-point (128-bit quad precision, VAX 6000+)",
+      "registers" : {
+        "h0" : { },
+        "h1" : { },
+        "h2" : { },
+        "h3" : { },
+        "h4" : { },
+        "h5" : { },
+        "h6" : { },
+        "h7" : { },
+        "h8" : { },
+        "h9" : { },
+        "h10" : { },
+        "h11" : { },
+        "h12" : { },
+        "h13" : { },
+        "h14" : { },
+        "h15" : { }
+      }
+    },
+    "mmu-regs" : {
+      "bit-size" : 32,
+      "description" : "Memory Management Registers",
+      "registers" : {
+        "p0br" : { "description" : "P0 (user) Base Register" },
+        "p0lr" : { "description" : "P0 Length Register" },
+        "p1br" : { "description" : "P1 (user stack) Base Register" },
+        "p1lr" : { "description" : "P1 Length Register" },
+        "sbr" : { "description" : "System Base Register" },
+        "slr" : { "description" : "System Length Register" }
+      }
+    },
+    "system-regs" : {
+      "bit-size" : 32,
+      "description" : "System Control Registers",
+      "registers" : {
+        "ksp" : { "description" : "Kernel Stack Pointer" },
+        "esp" : { "description" : "Executive Stack Pointer" },
+        "ssp" : { "description" : "Supervisor Stack Pointer" },
+        "usp" : { "description" : "User Stack Pointer" },
+        "isp" : { "description" : "Interrupt Stack Pointer" },
+        "scbb" : { "description" : "System Control Block Base" },
+        "pcbb" : { "description" : "Process Control Block Base" },
+        "sirr" : { "description" : "Software Interrupt Request Register" },
+        "sisr" : { "description" : "Software Interrupt Summary Register" },
+        "iccs" : { "description" : "Interval Clock Control/Status" },
+        "nicr" : { "description" : "Next Interval Count Register" },
+        "icr" : { "description" : "Interval Count Register" },
+        "todr" : { "description" : "Time Of Day Register" }
+      }
+    },
+    "ipr-regs" : {
+      "bit-size" : 32,
+      "description" : "Internal Processor Registers (IPR) - MFPR/MTPR accessible",
+      "registers" : {
+        "asten" : { "description" : "AST Enable" },
+        "astlvl" : { "description" : "AST Level" },
+        "cmkrnl" : { "description" : "Change Mode to Kernel" },
+        "cmexec" : { "description" : "Change Mode to Executive" },
+        "cmsupr" : { "description" : "Change Mode to Supervisor" },
+        "cmuser" : { "description" : "Change Mode to User" },
+        "sysptbr" : { "description" : "System Page Table Base Register" }
+      }
+    },
+    "vector-regs" : {
+      "bit-size" : 512,
+      "description" : "Vector Processing Registers (VAX 9000 series)",
+      "registers" : {
+        "v0" : { },
+        "v1" : { },
+        "v2" : { },
+        "v3" : { },
+        "v4" : { },
+        "v5" : { },
+        "v6" : { },
+        "v7" : { },
+        "v8" : { },
+        "v9" : { },
+        "v10" : { },
+        "v11" : { },
+        "v12" : { },
+        "v13" : { },
+        "v14" : { },
+        "v15" : { },
+        "vmr" : { "bit-size" : 32, "description" : "Vector Mask Register" },
+        "vsr" : { "bit-size" : 32, "description" : "Vector Status Register" },
+        "vlr" : { "bit-size" : 32, "description" : "Vector Length Register" },
+        "vcr" : { "bit-size" : 32, "description" : "Vector Control Register" }
+      }
+    },
+    "compat-regs" : {
+      "bit-size" : 16,
+      "description" : "PDP-11 Compatibility Mode Registers",
+      "registers" : {
+        "pdp11_r0" : { },
+        "pdp11_r1" : { },
+        "pdp11_r2" : { },
+        "pdp11_r3" : { },
+        "pdp11_r4" : { },
+        "pdp11_r5" : { },
+        "pdp11_r6" : { "alternate-name" : "pdp11_sp", "description" : "PDP-11 Stack Pointer" },
+        "pdp11_r7" : { "alternate-name" : "pdp11_pc", "description" : "PDP-11 Program Counter" },
+        "pdp11_psw" : { "description" : "PDP-11 Processor Status Word" }
+      }
+    }
+  },
+  "gdb-defs" : {
+    "architecture" : "vax",
+    "features" : [
+      "org.gnu.gdb.vax.core",
+      "org.gnu.gdb.vax.fpu",
+      "org.gnu.gdb.vax.system"
+    ],
+    "core-registers" : [
+      { "name" : "r0", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r1", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r2", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r3", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r4", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r5", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r6", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r7", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r8", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r9", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r10", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "r11", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "ap", "bitsize" : 32, "type" : "data_ptr", "group" : "general" },
+      { "name" : "fp", "bitsize" : 32, "type" : "data_ptr", "group" : "general" },
+      { "name" : "sp", "bitsize" : 32, "type" : "data_ptr", "group" : "general" },
+      { "name" : "pc", "bitsize" : 32, "type" : "code_ptr", "group" : "general" },
+      { "name" : "psl", "bitsize" : 32, "type" : "uint32", "group" : "general" }
+    ]
+  }
+}
