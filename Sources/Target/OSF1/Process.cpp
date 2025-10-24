@@ -8,6 +8,7 @@
 // PATENTS file in the same directory.
 //
 // OSF/1 Process - adapted from Hurd's Mach-based implementation
+// OSF/1 uses ECOFF binary format, not ELF
 //
 
 #include "DebugServer2/Target/Process.h"
@@ -24,7 +25,7 @@
 #include <sys/syscall.h>
 #include <sys/wait.h>
 
-#define super ds2::Target::POSIX::ELFProcess
+#define super ds2::Target::POSIX::ECOFFProcess
 
 namespace ds2 {
 namespace Target {

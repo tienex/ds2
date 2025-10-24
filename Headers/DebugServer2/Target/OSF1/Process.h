@@ -7,20 +7,20 @@
 // source tree. An additional grant of patent rights can be found in the
 // PATENTS file in the same directory.
 //
-// OSF/1 (Digital UNIX / Tru64) Process - Mach microkernel with ELF binaries
+// OSF/1 (Digital UNIX / Tru64) Process - Mach microkernel with ECOFF binaries
 //
 
 #pragma once
 
 #include "DebugServer2/Host/OSF1/Mach.h"
 #include "DebugServer2/Host/POSIX/PTrace.h"
-#include "DebugServer2/Target/POSIX/ELFProcess.h"
+#include "DebugServer2/Target/POSIX/ECOFFProcess.h"
 
 namespace ds2 {
 namespace Target {
 namespace OSF1 {
 
-class Process : public POSIX::ELFProcess {
+class Process : public POSIX::ECOFFProcess {
 protected:
   Host::POSIX::PTrace _ptrace;
   Host::OSF1::Mach _mach;

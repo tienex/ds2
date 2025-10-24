@@ -205,6 +205,10 @@ set(TARGET_POSIX_ELF_SOURCES
     Sources/Target/POSIX/ELFProcess.cpp
     )
 
+set(TARGET_POSIX_ECOFF_SOURCES
+    Sources/Target/POSIX/ECOFFProcess.cpp
+    )
+
 set(TARGET_POSIX_SOURCES
     Sources/Target/POSIX/Process.cpp
     Sources/Target/POSIX/Thread.cpp
@@ -246,7 +250,7 @@ set(TARGET_Hurd_SOURCES
     )
 
 set(TARGET_OSF1_SOURCES
-    ${TARGET_POSIX_ELF_SOURCES}
+    ${TARGET_POSIX_ECOFF_SOURCES}
     ${TARGET_POSIX_SOURCES}
     Sources/Target/OSF1/Process.cpp
     Sources/Target/OSF1/${ARCH_NAME}/Process${ARCH_NAME}.cpp
