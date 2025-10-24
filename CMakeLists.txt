@@ -232,6 +232,20 @@ set(HOST_FreeBSD_SOURCES
     Sources/Host/FreeBSD/${ARCH_NAME}/PTrace${ARCH_NAME}.cpp
     )
 
+set(HOST_NetBSD_SOURCES
+    ${HOST_POSIX_SOURCES}
+    Sources/Host/NetBSD/Platform.cpp
+    Sources/Host/NetBSD/PTrace.cpp
+    Sources/Host/NetBSD/${ARCH_NAME}/PTrace${ARCH_NAME}.cpp
+    )
+
+set(HOST_OpenBSD_SOURCES
+    ${HOST_POSIX_SOURCES}
+    Sources/Host/OpenBSD/Platform.cpp
+    Sources/Host/OpenBSD/PTrace.cpp
+    Sources/Host/OpenBSD/${ARCH_NAME}/PTrace${ARCH_NAME}.cpp
+    )
+
 set(HOST_Hurd_SOURCES
     ${HOST_POSIX_SOURCES}
     Sources/Host/Mach/Mach.cpp
@@ -337,6 +351,21 @@ set(TARGET_FreeBSD_SOURCES
     Sources/Target/FreeBSD/Thread.cpp
     )
 
+set(TARGET_NetBSD_SOURCES
+    ${TARGET_POSIX_ELF_SOURCES}
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/NetBSD/Process.cpp
+    Sources/Target/NetBSD/${ARCH_NAME}/Process${ARCH_NAME}.cpp
+    Sources/Target/NetBSD/Thread.cpp
+    )
+
+set(TARGET_OpenBSD_SOURCES
+    ${TARGET_POSIX_ELF_SOURCES}
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/OpenBSD/Process.cpp
+    Sources/Target/OpenBSD/Thread.cpp
+    )
+
 set(TARGET_Hurd_SOURCES
     ${TARGET_POSIX_ELF_SOURCES}
     ${TARGET_POSIX_SOURCES}
@@ -380,12 +409,26 @@ set(TARGET_IRIX_SOURCES
     Sources/Target/IRIX/Thread.cpp
     )
 
+# IRIX architecture-specific process files
+if (ARCH_NAME STREQUAL "MIPS")
+  list(APPEND TARGET_IRIX_SOURCES Sources/Target/IRIX/MIPS/ProcessMIPS.cpp)
+elseif (ARCH_NAME STREQUAL "MIPS64")
+  list(APPEND TARGET_IRIX_SOURCES Sources/Target/IRIX/MIPS64/ProcessMIPS64.cpp)
+endif()
+
 set(TARGET_Solaris_SOURCES
     ${TARGET_POSIX_ELF_SOURCES}
     ${TARGET_POSIX_SOURCES}
     Sources/Target/Solaris/Process.cpp
     Sources/Target/Solaris/Thread.cpp
     )
+
+# Solaris architecture-specific process files
+if (ARCH_NAME STREQUAL "X86")
+  list(APPEND TARGET_Solaris_SOURCES Sources/Target/Solaris/X86/ProcessX86.cpp)
+elseif (ARCH_NAME STREQUAL "X86_64")
+  list(APPEND TARGET_Solaris_SOURCES Sources/Target/Solaris/X86_64/ProcessX86_64.cpp)
+endif()
 
 set(TARGET_OpenServer_SOURCES
     ${TARGET_POSIX_ELF_SOURCES}
@@ -455,6 +498,16 @@ set(UTILS_Darwin_SOURCES
     )
 
 set(UTILS_FreeBSD_SOURCES
+    ${SUPPORT_POSIX_ELF_SOURCES}
+    ${UTILS_POSIX_SOURCES}
+    )
+
+set(UTILS_NetBSD_SOURCES
+    ${SUPPORT_POSIX_ELF_SOURCES}
+    ${UTILS_POSIX_SOURCES}
+    )
+
+set(UTILS_OpenBSD_SOURCES
     ${SUPPORT_POSIX_ELF_SOURCES}
     ${UTILS_POSIX_SOURCES}
     )

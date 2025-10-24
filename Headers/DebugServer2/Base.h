@@ -44,6 +44,8 @@ typedef SSIZE_T ssize_t;
 #define OS_FREEBSD
 #elif defined(__NetBSD__)
 #define OS_NETBSD
+#elif defined(__OpenBSD__)
+#define OS_OPENBSD
 #elif defined(__APPLE__)
 #define OS_DARWIN
 #elif defined(__GNU__)
@@ -70,7 +72,7 @@ typedef SSIZE_T ssize_t;
 #error "Target not supported."
 #endif
 
-#if defined(OS_LINUX) || defined(OS_FREEBSD) || defined(OS_NETBSD) || defined(OS_DARWIN) || defined(OS_HURD) || defined(OS_OSF1)
+#if defined(OS_LINUX) || defined(OS_FREEBSD) || defined(OS_NETBSD) || defined(OS_OPENBSD) || defined(OS_DARWIN) || defined(OS_HURD) || defined(OS_OSF1)
 #define OS_POSIX
 #endif
 
