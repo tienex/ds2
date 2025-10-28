@@ -1,0 +1,87 @@
+{
+  "namespace": "Alpha",
+  "register-sets": [
+    {
+      "name": "General Purpose Registers",
+      "registers": [
+        { "name": "r0",  "encoding": "uint", "format": "hex", "bit-size": 64 },
+        { "name": "r1",  "encoding": "uint", "format": "hex", "bit-size": 64 },
+        { "name": "r2",  "encoding": "uint", "format": "hex", "bit-size": 64 },
+        { "name": "r3",  "encoding": "uint", "format": "hex", "bit-size": 64 },
+        { "name": "r4",  "encoding": "uint", "format": "hex", "bit-size": 64 },
+        { "name": "r5",  "encoding": "uint", "format": "hex", "bit-size": 64 },
+        { "name": "r6",  "encoding": "uint", "format": "hex", "bit-size": 64 },
+        { "name": "r7",  "encoding": "uint", "format": "hex", "bit-size": 64 },
+        { "name": "r8",  "encoding": "uint", "format": "hex", "bit-size": 64 },
+        { "name": "r9",  "encoding": "uint", "format": "hex", "bit-size": 64 },
+        { "name": "r10", "encoding": "uint", "format": "hex", "bit-size": 64 },
+        { "name": "r11", "encoding": "uint", "format": "hex", "bit-size": 64 },
+        { "name": "r12", "encoding": "uint", "format": "hex", "bit-size": 64 },
+        { "name": "r13", "encoding": "uint", "format": "hex", "bit-size": 64 },
+        { "name": "r14", "encoding": "uint", "format": "hex", "bit-size": 64 },
+        { "name": "r15", "encoding": "uint", "format": "hex", "bit-size": 64, "alt-name": "fp" },
+        { "name": "r16", "encoding": "uint", "format": "hex", "bit-size": 64, "alt-name": "a0" },
+        { "name": "r17", "encoding": "uint", "format": "hex", "bit-size": 64, "alt-name": "a1" },
+        { "name": "r18", "encoding": "uint", "format": "hex", "bit-size": 64, "alt-name": "a2" },
+        { "name": "r19", "encoding": "uint", "format": "hex", "bit-size": 64, "alt-name": "a3" },
+        { "name": "r20", "encoding": "uint", "format": "hex", "bit-size": 64, "alt-name": "a4" },
+        { "name": "r21", "encoding": "uint", "format": "hex", "bit-size": 64, "alt-name": "a5" },
+        { "name": "r22", "encoding": "uint", "format": "hex", "bit-size": 64 },
+        { "name": "r23", "encoding": "uint", "format": "hex", "bit-size": 64 },
+        { "name": "r24", "encoding": "uint", "format": "hex", "bit-size": 64 },
+        { "name": "r25", "encoding": "uint", "format": "hex", "bit-size": 64 },
+        { "name": "r26", "encoding": "uint", "format": "hex", "bit-size": 64, "alt-name": "ra" },
+        { "name": "r27", "encoding": "uint", "format": "hex", "bit-size": 64, "alt-name": "pv" },
+        { "name": "r28", "encoding": "uint", "format": "hex", "bit-size": 64, "alt-name": "at" },
+        { "name": "r29", "encoding": "uint", "format": "hex", "bit-size": 64, "alt-name": "gp" },
+        { "name": "r30", "encoding": "uint", "format": "hex", "bit-size": 64, "alt-name": "sp", "generic": "sp" },
+        { "name": "r31", "encoding": "uint", "format": "hex", "bit-size": 64, "alt-name": "zero" }
+      ]
+    },
+    {
+      "name": "Floating Point Registers",
+      "registers": [
+        { "name": "f0",  "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f1",  "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f2",  "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f3",  "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f4",  "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f5",  "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f6",  "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f7",  "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f8",  "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f9",  "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f10", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f11", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f12", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f13", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f14", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f15", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f16", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f17", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f18", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f19", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f20", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f21", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f22", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f23", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f24", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f25", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f26", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f27", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f28", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f29", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f30", "encoding": "ieee754", "format": "float", "bit-size": 64 },
+        { "name": "f31", "encoding": "ieee754", "format": "float", "bit-size": 64 }
+      ]
+    },
+    {
+      "name": "Special Registers",
+      "registers": [
+        { "name": "pc",     "encoding": "uint", "format": "hex", "bit-size": 64, "generic": "pc" },
+        { "name": "fpcr",   "encoding": "uint", "format": "hex", "bit-size": 64 },
+        { "name": "unique", "encoding": "uint", "format": "hex", "bit-size": 64 }
+      ]
+    }
+  ]
+}

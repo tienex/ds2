@@ -29,8 +29,15 @@ public:
   static CPUType GetCPUType();
   static CPUSubType GetCPUSubType();
   static Endian GetEndian();
+  static uint32_t GetCPUFeatures();
   static size_t GetPointerSize();
   static size_t GetPageSize();
+
+#if defined(ARCH_MIPS) || defined(ARCH_MIPS64)
+  // Get the MIPS ABI (O32, N32, N64, etc.)
+  // Returns a string representation of the ABI
+  static char const *GetMIPSABI();
+#endif
 
 public:
   static char const *GetHostName(bool fqdn = false);

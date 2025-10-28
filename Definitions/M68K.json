@@ -1,0 +1,142 @@
+{
+  "namespace" : "M68K",
+  "register-sets" : {
+    "data-regs" : {
+      "bit-size" : 32,
+      "description" : "Data Registers (8 x 32-bit)",
+      "registers" : {
+        "d0" : { "description" : "Data register 0" },
+        "d1" : { "description" : "Data register 1" },
+        "d2" : { "description" : "Data register 2" },
+        "d3" : { "description" : "Data register 3" },
+        "d4" : { "description" : "Data register 4" },
+        "d5" : { "description" : "Data register 5" },
+        "d6" : { "description" : "Data register 6" },
+        "d7" : { "description" : "Data register 7" }
+      }
+    },
+    "addr-regs" : {
+      "bit-size" : 32,
+      "description" : "Address Registers (7 x 32-bit + stack pointers)",
+      "registers" : {
+        "a0" : { "description" : "Address register 0" },
+        "a1" : { "description" : "Address register 1" },
+        "a2" : { "description" : "Address register 2" },
+        "a3" : { "description" : "Address register 3" },
+        "a4" : { "description" : "Address register 4" },
+        "a5" : { "description" : "Address register 5" },
+        "a6" : { "description" : "Address register 6" },
+        "a7" : { "alternate-name" : "sp", "generic-name" : "sp", "description" : "Stack Pointer / Address register 7" }
+      }
+    },
+    "stack-regs" : {
+      "bit-size" : 32,
+      "description" : "Stack Pointers",
+      "registers" : {
+        "usp" : { "description" : "User Stack Pointer" },
+        "ssp" : { "description" : "Supervisor Stack Pointer" },
+        "msp" : { "description" : "Master Stack Pointer (68020+)" },
+        "isp" : { "description" : "Interrupt Stack Pointer (68020+)" }
+      }
+    },
+    "special-regs" : {
+      "description" : "Program Counter and Status Register",
+      "registers" : {
+        "pc" : { "bit-size" : 32, "generic-name" : "pc", "description" : "Program Counter" },
+        "sr" : { "bit-size" : 16, "description" : "Status Register (CCR + System byte)" }
+      }
+    },
+    "fp-regs" : {
+      "bit-size" : 80,
+      "encoding" : "ieee-extended",
+      "description" : "Floating-Point Registers (8 x 80-bit extended precision)",
+      "registers" : {
+        "fp0" : { },
+        "fp1" : { },
+        "fp2" : { },
+        "fp3" : { },
+        "fp4" : { },
+        "fp5" : { },
+        "fp6" : { },
+        "fp7" : { }
+      }
+    },
+    "fpu-ctrl-regs" : {
+      "bit-size" : 32,
+      "description" : "FPU Control Registers",
+      "registers" : {
+        "fpcr" : { "description" : "Floating-Point Control Register" },
+        "fpsr" : { "description" : "Floating-Point Status Register" },
+        "fpiar" : { "description" : "Floating-Point Instruction Address Register" }
+      }
+    },
+    "mmu-regs" : {
+      "bit-size" : 32,
+      "description" : "Memory Management Unit Registers",
+      "registers" : {
+        "crp" : { "description" : "CPU Root Pointer" },
+        "srp" : { "description" : "Supervisor Root Pointer" },
+        "tc" : { "bit-size" : 16, "description" : "Translation Control" },
+        "tt0" : { "bit-size" : 16, "description" : "Transparent Translation 0" },
+        "tt1" : { "bit-size" : 16, "description" : "Transparent Translation 1" },
+        "mmusr" : { "description" : "MMU Status Register" },
+        "urp" : { "description" : "User Root Pointer (68040+)" },
+        "itt0" : { "description" : "Instruction Transparent Translation 0 (68040+)" },
+        "itt1" : { "description" : "Instruction Transparent Translation 1 (68040+)" },
+        "dtt0" : { "description" : "Data Transparent Translation 0 (68040+)" },
+        "dtt1" : { "description" : "Data Transparent Translation 1 (68040+)" }
+      }
+    },
+    "ctrl-regs" : {
+      "bit-size" : 32,
+      "description" : "Control Registers",
+      "registers" : {
+        "vbr" : { "description" : "Vector Base Register (68010+)" },
+        "sfc" : { "bit-size" : 16, "description" : "Source Function Code (68010+)" },
+        "dfc" : { "bit-size" : 16, "description" : "Destination Function Code (68010+)" },
+        "cacr" : { "bit-size" : 16, "description" : "Cache Control Register (68020+)" },
+        "caar" : { "description" : "Cache Address Register (68020/68030)" }
+      }
+    }
+  },
+  "gdb-defs" : {
+    "architecture" : "m68k",
+    "features" : [
+      "org.gnu.gdb.m68k.core",
+      "org.gnu.gdb.m68k.fpu"
+    ],
+    "core-registers" : [
+      { "name" : "d0", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "d1", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "d2", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "d3", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "d4", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "d5", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "d6", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "d7", "bitsize" : 32, "type" : "uint32" },
+      { "name" : "a0", "bitsize" : 32, "type" : "data_ptr" },
+      { "name" : "a1", "bitsize" : 32, "type" : "data_ptr" },
+      { "name" : "a2", "bitsize" : 32, "type" : "data_ptr" },
+      { "name" : "a3", "bitsize" : 32, "type" : "data_ptr" },
+      { "name" : "a4", "bitsize" : 32, "type" : "data_ptr" },
+      { "name" : "a5", "bitsize" : 32, "type" : "data_ptr" },
+      { "name" : "a6", "bitsize" : 32, "type" : "data_ptr" },
+      { "name" : "sp", "bitsize" : 32, "type" : "data_ptr", "group" : "general" },
+      { "name" : "pc", "bitsize" : 32, "type" : "code_ptr", "group" : "general" },
+      { "name" : "sr", "bitsize" : 16, "type" : "uint16", "group" : "general" }
+    ],
+    "float-registers" : [
+      { "name" : "fp0", "bitsize" : 96, "type" : "m68k_ext", "group" : "float" },
+      { "name" : "fp1", "bitsize" : 96, "type" : "m68k_ext", "group" : "float" },
+      { "name" : "fp2", "bitsize" : 96, "type" : "m68k_ext", "group" : "float" },
+      { "name" : "fp3", "bitsize" : 96, "type" : "m68k_ext", "group" : "float" },
+      { "name" : "fp4", "bitsize" : 96, "type" : "m68k_ext", "group" : "float" },
+      { "name" : "fp5", "bitsize" : 96, "type" : "m68k_ext", "group" : "float" },
+      { "name" : "fp6", "bitsize" : 96, "type" : "m68k_ext", "group" : "float" },
+      { "name" : "fp7", "bitsize" : 96, "type" : "m68k_ext", "group" : "float" },
+      { "name" : "fpcr", "bitsize" : 32, "type" : "uint32", "group" : "float" },
+      { "name" : "fpsr", "bitsize" : 32, "type" : "uint32", "group" : "float" },
+      { "name" : "fpiar", "bitsize" : 32, "type" : "uint32", "group" : "float" }
+    ]
+  }
+}

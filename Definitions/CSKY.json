@@ -1,0 +1,10 @@
+{
+  "namespace" : "CSKY",
+  "register-sets" : {
+    "gpr" : { "bit-size" : 32, "registers" : {
+      "r14" : { "alternate-name" : "sp", "generic-name" : "sp" },
+      "r15" : { "alternate-name" : "lr" }
+    }}
+  },
+  "gdb-defs" : { "architecture" : "csky" }
+}

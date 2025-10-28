@@ -42,14 +42,46 @@ typedef SSIZE_T ssize_t;
 #define OS_WIN32
 #elif defined(__FreeBSD__)
 #define OS_FREEBSD
+#elif defined(__NetBSD__)
+#define OS_NETBSD
+#elif defined(__OpenBSD__)
+#define OS_OPENBSD
+#elif defined(__DragonFly__)
+#define OS_DRAGONFLY
 #elif defined(__APPLE__)
 #define OS_DARWIN
+#elif defined(__GNU__)
+#define OS_HURD
+#elif defined(__osf__) || defined(__digital__) || defined(__alpha)
+#define OS_OSF1
+#elif defined(_AIX) || defined(__TOS_AIX__)
+#define OS_AIX
+#elif defined(__hpux) || defined(__hpux__) || defined(_HPUX_SOURCE)
+#define OS_HPUX
+#elif defined(__sgi) || defined(sgi) || defined(__sgi__)
+#define OS_IRIX
+#elif defined(__sun) || defined(sun)
+#if defined(__SVR4) || defined(__svr4__)
+#define OS_SOLARIS
+#else
+#define OS_SUNOS
+#endif
+#elif defined(_SCO_DS) || defined(__SCO_VERSION__)
+#define OS_OPENSERVER
+#elif defined(__USLC__) || defined(__UNIXWARE__)
+#define OS_UNIXWARE
 #else
 #error "Target not supported."
 #endif
 
-#if defined(OS_LINUX) || defined(OS_FREEBSD) || defined(OS_DARWIN)
+#if defined(OS_LINUX) || defined(OS_FREEBSD) || defined(OS_NETBSD) || defined(OS_OPENBSD) || defined(OS_DRAGONFLY) || defined(OS_DARWIN) || defined(OS_HURD) || defined(OS_OSF1)
 #define OS_POSIX
+#endif
+
+// System V Unix variants use procfs-based debugging
+#if defined(OS_AIX) || defined(OS_HPUX) || defined(OS_IRIX) || defined(OS_SOLARIS) || defined(OS_OPENSERVER) || defined(OS_UNIXWARE)
+#define OS_POSIX
+#define OS_SYSV
 #endif
 
 #if defined(OS_LINUX)
@@ -76,6 +108,43 @@ typedef SSIZE_T ssize_t;
 #elif defined(__x86_64__) || defined(_M_AMD64)
 #define ARCH_X86_64
 #define BITSIZE_64
+#elif defined(__mips64) || defined(__mips64__) || defined(_MIPS_ARCH_MIPS64)
+#define ARCH_MIPS64
+#define BITSIZE_64
+#elif defined(__mips__) || defined(__mips) || defined(_MIPS_ARCH)
+#define ARCH_MIPS
+#define BITSIZE_32
+#elif defined(__alpha__) || defined(__alpha) || defined(_M_ALPHA)
+// Alpha is primarily 64-bit, but Windows NT had a 32-bit variant
+#if defined(_M_ALPHA) && !defined(__alpha64__)
+#define ARCH_ALPHA32
+#define BITSIZE_32
+#else
+#define ARCH_ALPHA
+#define BITSIZE_64
+#endif
+#elif defined(__powerpc64__) || defined(__ppc64__) || defined(__PPC64__) || defined(_ARCH_PPC64)
+#define ARCH_PPC64
+#define BITSIZE_64
+#elif defined(__powerpc__) || defined(__ppc__) || defined(__PPC__) || defined(_ARCH_PPC)
+#define ARCH_PPC
+#define BITSIZE_32
+#elif defined(__hppa__) || defined(__hppa) || defined(__parisc__)
+#if defined(__LP64__) || defined(__hppa64__)
+#define ARCH_PARISC64
+#define BITSIZE_64
+#else
+#define ARCH_PARISC
+#define BITSIZE_32
+#endif
+#elif defined(__sparc__)
+#if defined(__arch64__) || defined(__sparcv9)
+#define ARCH_SPARC64
+#define BITSIZE_64
+#else
+#define ARCH_SPARC
+#define BITSIZE_32
+#endif
 #else
 #error "Architecture not supported."
 #endif

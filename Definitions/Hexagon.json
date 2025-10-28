@@ -1,0 +1,7 @@
+{
+  "namespace" : "Hexagon",
+  "register-sets" : {
+    "gpr" : { "bit-size" : 32, "description" : "R0-R31" }
+  },
+  "gdb-defs" : { "architecture" : "hexagon" }
+}

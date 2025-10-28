@@ -59,12 +59,24 @@ struct CPUState {
 
   struct {
     union {
-      VFPSingle sng[32];
-      VFPDouble dbl[32];
-      VFPQuad quad[16];
+      VFPSingle sng[32];   // S0-S31 (VFPv2+)
+      VFPDouble dbl[32];   // D0-D31 (D0-D15 VFPv2, D16-D31 VFPv3+)
+      VFPQuad quad[16];    // Q0-Q15 (NEON/Advanced SIMD)
+      uint64_t d[32];      // Alias for D registers as raw uint64
     };
-    uint32_t fpscr;
+    uint32_t fpscr;        // Floating-Point Status and Control Register
+    uint32_t fpexc;        // Floating-Point Exception Register (VFPv2+)
+    uint32_t fpsid;        // Floating-Point System ID Register (VFPv2+)
   } vfp;
+
+  // NEON/Advanced SIMD specific state (ARMv7-A with NEON)
+  struct {
+    // NEON shares register file with VFP (Q0-Q15 = D0-D31)
+    // Additional control register
+    uint32_t mvfr0;        // Media and VFP Feature Register 0
+    uint32_t mvfr1;        // Media and VFP Feature Register 1
+    uint32_t mvfr2;        // Media and VFP Feature Register 2 (ARMv8-A)
+  } neon;
 
   struct {
     // Breakpoints
@@ -76,13 +88,64 @@ struct CPUState {
     uint32_t wp_addr[32];
   } hbp;
 
+  // System control registers (CP15)
+  struct {
+    uint32_t sctlr;        // System Control Register
+    uint32_t actlr;        // Auxiliary Control Register
+    uint32_t cpacr;        // Coprocessor Access Control Register
+
+    // Thread ID registers (for TLS support)
+    uint32_t tpidruro;     // User Read-Only Thread ID Register
+    uint32_t tpidrurw;     // User Read/Write Thread ID Register
+    uint32_t tpidrprw;     // PL1 only Thread ID Register
+
+    // Cache Type Register
+    uint32_t ctr;          // Cache Type Register
+
+    // Multiprocessor Affinity Register
+    uint32_t mpidr;        // Multiprocessor Affinity Register
+  } system;
+
+  // Generic Timer (ARMv7-A Generic Timer Extension)
+  struct {
+    uint64_t cntvct;       // Virtual Count register
+    uint64_t cntfrq;       // Counter Frequency register
+    uint32_t cntkctl;      // Timer PL1 Control register
+    uint32_t cntp_ctl;     // Physical Timer Control register
+    uint32_t cntp_cval;    // Physical Timer CompareValue register
+    uint32_t cntv_ctl;     // Virtual Timer Control register
+    uint32_t cntv_cval;    // Virtual Timer CompareValue register
+  } timer;
+
+  // Performance Monitors Extension (ARMv7-A)
+  struct {
+    uint32_t pmcr;         // Performance Monitors Control Register
+    uint32_t pmcntenset;   // Count Enable Set register
+    uint32_t pmcntenclr;   // Count Enable Clear register
+    uint32_t pmovsr;       // Overflow Flag Status Register
+    uint32_t pmswinc;      // Software Increment register
+    uint32_t pmselr;       // Event Counter Selection Register
+    uint32_t pmceid0;      // Common Event Identification register 0
+    uint32_t pmceid1;      // Common Event Identification register 1
+    uint32_t pmccntr;      // Cycle Count Register (64-bit)
+    uint32_t pmxevtyper;   // Event Type Select Register
+    uint32_t pmxevcntr;    // Event Count Register
+    uint32_t pmuserenr;    // User Enable Register
+    uint32_t pmintenset;   // Interrupt Enable Set register
+    uint32_t pmintenclr;   // Interrupt Enable Clear register
+  } pmu;
+
 public:
   CPUState() { clear(); }
 
   inline void clear() {
     std::memset(&gp, 0, sizeof(gp));
     std::memset(&vfp, 0, sizeof(vfp));
+    std::memset(&neon, 0, sizeof(neon));
     std::memset(&hbp, 0, sizeof(hbp));
+    std::memset(&system, 0, sizeof(system));
+    std::memset(&timer, 0, sizeof(timer));
+    std::memset(&pmu, 0, sizeof(pmu));
   }
 
 public:

@@ -20,6 +20,8 @@
 #include "DebugServer2/Target/FreeBSD/Thread.h"
 #elif defined(OS_DARWIN)
 #include "DebugServer2/Target/Darwin/Thread.h"
+#elif defined(OS_HURD)
+#include "DebugServer2/Target/Hurd/Thread.h"
 #else
 #error "Target not supported."
 #endif
@@ -35,6 +37,8 @@ using Windows::Thread;
 using FreeBSD::Thread;
 #elif defined(OS_DARWIN)
 using Darwin::Thread;
+#elif defined(OS_HURD)
+using Hurd::Thread;
 #else
 #error "Target not supported."
 #endif

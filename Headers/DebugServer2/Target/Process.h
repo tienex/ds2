@@ -20,6 +20,8 @@
 #include "DebugServer2/Target/FreeBSD/Process.h"
 #elif defined(OS_DARWIN)
 #include "DebugServer2/Target/Darwin/Process.h"
+#elif defined(OS_HURD)
+#include "DebugServer2/Target/Hurd/Process.h"
 #else
 #error "Target not supported."
 #endif
@@ -35,6 +37,8 @@ using Windows::Process;
 using FreeBSD::Process;
 #elif defined(OS_DARWIN)
 using Darwin::Process;
+#elif defined(OS_HURD)
+using Hurd::Process;
 #else
 #error "Target not supported."
 #endif

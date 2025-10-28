@@ -33,6 +33,24 @@ elseif (ARCH_NAME MATCHES "I[3-6]86")
   set(ARCH_NAME "X86")
 elseif (ARCH_NAME MATCHES "AMD64")
   set(ARCH_NAME "X86_64")
+elseif (ARCH_NAME MATCHES "^MIPS64")
+  set(ARCH_NAME "MIPS64")
+elseif (ARCH_NAME MATCHES "^MIPS")
+  set(ARCH_NAME "MIPS")
+elseif (ARCH_NAME MATCHES "^ALPHA" OR ARCH_NAME MATCHES "^AXP")
+  set(ARCH_NAME "ALPHA")
+elseif (ARCH_NAME MATCHES "PPC64" OR ARCH_NAME MATCHES "POWERPC64")
+  set(ARCH_NAME "PPC64")
+elseif (ARCH_NAME MATCHES "PPC" OR ARCH_NAME MATCHES "POWERPC")
+  set(ARCH_NAME "PPC")
+elseif (ARCH_NAME MATCHES "PARISC64" OR ARCH_NAME MATCHES "HPPA64")
+  set(ARCH_NAME "PARISC64")
+elseif (ARCH_NAME MATCHES "PARISC" OR ARCH_NAME MATCHES "HPPA")
+  set(ARCH_NAME "PARISC")
+elseif (ARCH_NAME MATCHES "SPARC64" OR ARCH_NAME MATCHES "SPARCV9")
+  set(ARCH_NAME "SPARC64")
+elseif (ARCH_NAME MATCHES "SPARC")
+  set(ARCH_NAME "SPARC")
 endif ()
 
 if ("${OS_NAME}" MATCHES "Linux" OR "${OS_NAME}" MATCHES "Android")
@@ -90,6 +108,17 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     set(ARCH_NAME "X86")
   elseif ("${CMAKE_CXX_COMPILER_ARCHITECTURE_ID}" MATCHES "ARM")
     set(ARCH_NAME "ARM")
+  elseif ("${CMAKE_CXX_COMPILER_ARCHITECTURE_ID}" MATCHES "MIPS")
+    set(ARCH_NAME "MIPS")
+  elseif ("${CMAKE_CXX_COMPILER_ARCHITECTURE_ID}" MATCHES "ALPHA")
+    # Windows NT (3.51-4.0) used 32-bit Alpha (ALPHA32)
+    # Windows 2000 AXP64 (never released) would use 64-bit Alpha (ALPHA)
+    # Detect based on pointer size or explicit definition
+    if (CMAKE_SIZEOF_VOID_P EQUAL 8)
+      set(ARCH_NAME "ALPHA")   # 64-bit Alpha (Windows 2000 AXP64)
+    else()
+      set(ARCH_NAME "ALPHA32") # 32-bit Alpha (Windows NT)
+    endif()
   endif()
 endif ()
 
@@ -116,6 +145,49 @@ set(ARCHITECTURE_X86_SOURCES
 set(ARCHITECTURE_X86_64_SOURCES
     ${ARCHITECTURE_X86_SOURCES}
     Sources/Architecture/X86_64/RegistersDescriptors.cpp
+    )
+
+set(ARCHITECTURE_MIPS_SOURCES
+    Sources/Architecture/MIPS/RegistersDescriptors.cpp
+    Sources/Architecture/MIPS/SoftwareSingleStep.cpp
+    )
+
+set(ARCHITECTURE_MIPS64_SOURCES
+    ${ARCHITECTURE_MIPS_SOURCES}
+    Sources/Architecture/MIPS64/RegistersDescriptors.cpp
+    Sources/Architecture/MIPS64/SoftwareSingleStep.cpp
+    )
+
+set(ARCHITECTURE_ALPHA_SOURCES
+    Sources/Architecture/Alpha/SoftwareSingleStep.cpp
+    )
+
+set(ARCHITECTURE_ALPHA32_SOURCES
+    ${ARCHITECTURE_ALPHA_SOURCES}
+    )
+
+set(ARCHITECTURE_PPC_SOURCES
+    Sources/Architecture/PowerPC/SoftwareSingleStep.cpp
+    )
+
+set(ARCHITECTURE_PPC64_SOURCES
+    ${ARCHITECTURE_PPC_SOURCES}
+    )
+
+set(ARCHITECTURE_PARISC_SOURCES
+    Sources/Architecture/PARISC/SoftwareSingleStep.cpp
+    )
+
+set(ARCHITECTURE_PARISC64_SOURCES
+    ${ARCHITECTURE_PARISC_SOURCES}
+    )
+
+set(ARCHITECTURE_SPARC_SOURCES
+    Sources/Architecture/SPARC/SoftwareSingleStep.cpp
+    )
+
+set(ARCHITECTURE_SPARC64_SOURCES
+    ${ARCHITECTURE_SPARC_SOURCES}
     )
 
 set(HOST_COMMON_SOURCES
@@ -147,7 +219,7 @@ set(HOST_Darwin_SOURCES
     Sources/Host/Darwin/LibProc.cpp
     Sources/Host/Darwin/Platform.cpp
     Sources/Host/Darwin/PTrace.cpp
-    Sources/Host/Darwin/Mach.cpp
+    Sources/Host/Mach/Mach.cpp
     Sources/Host/Darwin/${ARCH_NAME}/Mach${ARCH_NAME}.cpp
     Sources/Host/Darwin/${ARCH_NAME}/PTrace${ARCH_NAME}.cpp
     )
@@ -158,6 +230,68 @@ set(HOST_FreeBSD_SOURCES
     Sources/Host/FreeBSD/Platform.cpp
     Sources/Host/FreeBSD/PTrace.cpp
     Sources/Host/FreeBSD/${ARCH_NAME}/PTrace${ARCH_NAME}.cpp
+    )
+
+set(HOST_NetBSD_SOURCES
+    ${HOST_POSIX_SOURCES}
+    Sources/Host/NetBSD/Platform.cpp
+    Sources/Host/NetBSD/PTrace.cpp
+    Sources/Host/NetBSD/${ARCH_NAME}/PTrace${ARCH_NAME}.cpp
+    )
+
+set(HOST_OpenBSD_SOURCES
+    ${HOST_POSIX_SOURCES}
+    Sources/Host/OpenBSD/Platform.cpp
+    Sources/Host/OpenBSD/PTrace.cpp
+    Sources/Host/OpenBSD/${ARCH_NAME}/PTrace${ARCH_NAME}.cpp
+    )
+
+set(HOST_DragonFly_SOURCES
+    ${HOST_POSIX_SOURCES}
+    Sources/Host/DragonFly/Platform.cpp
+    Sources/Host/DragonFly/PTrace.cpp
+    Sources/Host/DragonFly/${ARCH_NAME}/PTrace${ARCH_NAME}.cpp
+    )
+
+set(HOST_Hurd_SOURCES
+    ${HOST_POSIX_SOURCES}
+    Sources/Host/Mach/Mach.cpp
+    Sources/Host/Hurd/${ARCH_NAME}/Mach${ARCH_NAME}.cpp
+    )
+
+set(HOST_OSF1_SOURCES
+    ${HOST_POSIX_SOURCES}
+    Sources/Host/Mach/Mach.cpp
+    Sources/Host/OSF1/${ARCH_NAME}/Mach${ARCH_NAME}.cpp
+    )
+
+set(HOST_SYSV_SOURCES
+    ${HOST_POSIX_SOURCES}
+    Sources/Host/SystemV/ProcFS.cpp
+    )
+
+set(HOST_AIX_SOURCES
+    ${HOST_SYSV_SOURCES}
+    )
+
+set(HOST_HPUX_SOURCES
+    ${HOST_SYSV_SOURCES}
+    )
+
+set(HOST_IRIX_SOURCES
+    ${HOST_SYSV_SOURCES}
+    )
+
+set(HOST_Solaris_SOURCES
+    ${HOST_SYSV_SOURCES}
+    )
+
+set(HOST_OpenServer_SOURCES
+    ${HOST_SYSV_SOURCES}
+    )
+
+set(HOST_UnixWare_SOURCES
+    ${HOST_SYSV_SOURCES}
     )
 
 set(HOST_Windows_SOURCES
@@ -174,6 +308,22 @@ set(TARGET_COMMON_SOURCES
 
 set(TARGET_POSIX_ELF_SOURCES
     Sources/Target/POSIX/ELFProcess.cpp
+    )
+
+set(TARGET_POSIX_ECOFF_SOURCES
+    Sources/Target/POSIX/ECOFFProcess.cpp
+    )
+
+set(TARGET_POSIX_XCOFF_SOURCES
+    Sources/Target/POSIX/XCOFFProcess.cpp
+    )
+
+set(TARGET_POSIX_SOM_SOURCES
+    Sources/Target/POSIX/SOMProcess.cpp
+    )
+
+set(TARGET_POSIX_COFF_SOURCES
+    Sources/Target/POSIX/COFFProcess.cpp
     )
 
 set(TARGET_POSIX_SOURCES
@@ -208,11 +358,117 @@ set(TARGET_FreeBSD_SOURCES
     Sources/Target/FreeBSD/Thread.cpp
     )
 
+set(TARGET_NetBSD_SOURCES
+    ${TARGET_POSIX_ELF_SOURCES}
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/NetBSD/Process.cpp
+    Sources/Target/NetBSD/${ARCH_NAME}/Process${ARCH_NAME}.cpp
+    Sources/Target/NetBSD/Thread.cpp
+    )
+
+set(TARGET_OpenBSD_SOURCES
+    ${TARGET_POSIX_ELF_SOURCES}
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/OpenBSD/Process.cpp
+    Sources/Target/OpenBSD/Thread.cpp
+    )
+
+set(TARGET_DragonFly_SOURCES
+    ${TARGET_POSIX_ELF_SOURCES}
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/DragonFly/Process.cpp
+    Sources/Target/DragonFly/${ARCH_NAME}/Process${ARCH_NAME}.cpp
+    Sources/Target/DragonFly/Thread.cpp
+    )
+
+set(TARGET_Hurd_SOURCES
+    ${TARGET_POSIX_ELF_SOURCES}
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/Hurd/Process.cpp
+    Sources/Target/Hurd/${ARCH_NAME}/Process${ARCH_NAME}.cpp
+    Sources/Target/Hurd/Thread.cpp
+    )
+
+set(TARGET_OSF1_SOURCES
+    ${TARGET_POSIX_ECOFF_SOURCES}
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/OSF1/Process.cpp
+    Sources/Target/OSF1/${ARCH_NAME}/Process${ARCH_NAME}.cpp
+    Sources/Target/OSF1/Thread.cpp
+    )
+
+set(TARGET_AIX_SOURCES
+    ${TARGET_POSIX_XCOFF_SOURCES}
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/AIX/Process.cpp
+    Sources/Target/AIX/Thread.cpp
+    )
+
+set(TARGET_HPUX_SOURCES
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/HPUX/Process.cpp
+    Sources/Target/HPUX/Thread.cpp
+    )
+
+# HP-UX uses SOM on PA-RISC, ELF on Itanium
+if (ARCH_NAME MATCHES "PARISC")
+  list(APPEND TARGET_HPUX_SOURCES ${TARGET_POSIX_SOM_SOURCES})
+else()
+  list(APPEND TARGET_HPUX_SOURCES ${TARGET_POSIX_ELF_SOURCES})
+endif()
+
+set(TARGET_IRIX_SOURCES
+    ${TARGET_POSIX_ELF_SOURCES}
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/IRIX/Process.cpp
+    Sources/Target/IRIX/Thread.cpp
+    )
+
+# IRIX architecture-specific process files
+if (ARCH_NAME STREQUAL "MIPS")
+  list(APPEND TARGET_IRIX_SOURCES Sources/Target/IRIX/MIPS/ProcessMIPS.cpp)
+elseif (ARCH_NAME STREQUAL "MIPS64")
+  list(APPEND TARGET_IRIX_SOURCES Sources/Target/IRIX/MIPS64/ProcessMIPS64.cpp)
+endif()
+
+set(TARGET_Solaris_SOURCES
+    ${TARGET_POSIX_ELF_SOURCES}
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/Solaris/Process.cpp
+    Sources/Target/Solaris/Thread.cpp
+    )
+
+# Solaris architecture-specific process files
+if (ARCH_NAME STREQUAL "X86")
+  list(APPEND TARGET_Solaris_SOURCES Sources/Target/Solaris/X86/ProcessX86.cpp)
+elseif (ARCH_NAME STREQUAL "X86_64")
+  list(APPEND TARGET_Solaris_SOURCES Sources/Target/Solaris/X86_64/ProcessX86_64.cpp)
+endif()
+
+set(TARGET_OpenServer_SOURCES
+    ${TARGET_POSIX_ELF_SOURCES}
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/OpenServer/Process.cpp
+    Sources/Target/OpenServer/Thread.cpp
+    )
+
+set(TARGET_UnixWare_SOURCES
+    ${TARGET_POSIX_ELF_SOURCES}
+    ${TARGET_POSIX_SOURCES}
+    Sources/Target/UnixWare/Process.cpp
+    Sources/Target/UnixWare/Thread.cpp
+    )
+
 set(TARGET_Windows_SOURCES
     Sources/Target/Windows/Process.cpp
     Sources/Target/Windows/Thread.cpp
     Sources/Target/Windows/${ARCH_NAME}/Thread${ARCH_NAME}.cpp
     )
+
+# Windows Alpha64 needs process-specific implementation for memory allocation
+if (ARCH_NAME STREQUAL "ALPHA")
+  list(APPEND TARGET_Windows_SOURCES Sources/Target/Windows/Alpha/ProcessAlpha.cpp)
+endif()
 
 set(GDBREMOTE_SOURCES
     Sources/GDBRemote/DebugSessionImpl.cpp
@@ -261,6 +517,54 @@ set(UTILS_FreeBSD_SOURCES
     ${UTILS_POSIX_SOURCES}
     )
 
+set(UTILS_NetBSD_SOURCES
+    ${SUPPORT_POSIX_ELF_SOURCES}
+    ${UTILS_POSIX_SOURCES}
+    )
+
+set(UTILS_OpenBSD_SOURCES
+    ${SUPPORT_POSIX_ELF_SOURCES}
+    ${UTILS_POSIX_SOURCES}
+    )
+
+set(UTILS_DragonFly_SOURCES
+    ${SUPPORT_POSIX_ELF_SOURCES}
+    ${UTILS_POSIX_SOURCES}
+    )
+
+set(UTILS_Hurd_SOURCES
+    ${SUPPORT_POSIX_ELF_SOURCES}
+    ${UTILS_POSIX_SOURCES}
+    )
+
+set(UTILS_AIX_SOURCES
+    ${UTILS_POSIX_SOURCES}
+    )
+
+set(UTILS_HPUX_SOURCES
+    ${UTILS_POSIX_SOURCES}
+    )
+
+set(UTILS_IRIX_SOURCES
+    ${SUPPORT_POSIX_ELF_SOURCES}
+    ${UTILS_POSIX_SOURCES}
+    )
+
+set(UTILS_Solaris_SOURCES
+    ${SUPPORT_POSIX_ELF_SOURCES}
+    ${UTILS_POSIX_SOURCES}
+    )
+
+set(UTILS_OpenServer_SOURCES
+    ${SUPPORT_POSIX_ELF_SOURCES}
+    ${UTILS_POSIX_SOURCES}
+    )
+
+set(UTILS_UnixWare_SOURCES
+    ${SUPPORT_POSIX_ELF_SOURCES}
+    ${UTILS_POSIX_SOURCES}
+    )
+
 set(UTILS_Windows_SOURCES
     Sources/Utils/Windows/Daemon.cpp
     Sources/Utils/Windows/FaultHandler.cpp
@@ -287,8 +591,45 @@ set(CORE_X86_SOURCES
     Sources/Core/X86/SoftwareBreakpointManager.cpp
     )
 
+set(CORE_MIPS_SOURCES
+    Sources/Core/MIPS/HardwareBreakpointManager.cpp
+    Sources/Core/MIPS/SoftwareBreakpointManager.cpp
+    )
+
 set(CORE_ARM64_SOURCES ${CORE_ARM_SOURCES})
 set(CORE_X86_64_SOURCES ${CORE_X86_SOURCES})
+set(CORE_MIPS64_SOURCES
+    Sources/Core/MIPS64/HardwareBreakpointManager.cpp
+    Sources/Core/MIPS64/SoftwareBreakpointManager.cpp
+    )
+
+set(CORE_ALPHA_SOURCES
+    Sources/Core/Alpha/HardwareBreakpointManager.cpp
+    Sources/Core/Alpha/SoftwareBreakpointManager.cpp
+    )
+
+set(CORE_ALPHA32_SOURCES ${CORE_ALPHA_SOURCES})
+
+set(CORE_PPC_SOURCES
+    Sources/Core/PowerPC/HardwareBreakpointManager.cpp
+    Sources/Core/PowerPC/SoftwareBreakpointManager.cpp
+    )
+
+set(CORE_PPC64_SOURCES ${CORE_PPC_SOURCES})
+
+set(CORE_PARISC_SOURCES
+    Sources/Core/PARISC/HardwareBreakpointManager.cpp
+    Sources/Core/PARISC/SoftwareBreakpointManager.cpp
+    )
+
+set(CORE_PARISC64_SOURCES ${CORE_PARISC_SOURCES})
+
+set(CORE_SPARC_SOURCES
+    Sources/Core/SPARC/HardwareBreakpointManager.cpp
+    Sources/Core/SPARC/SoftwareBreakpointManager.cpp
+    )
+
+set(CORE_SPARC64_SOURCES ${CORE_SPARC_SOURCES})
 
 set(HOST_SOURCES ${HOST_COMMON_SOURCES} ${HOST_${OS_NAME}_SOURCES})
 set(TARGET_SOURCES ${TARGET_COMMON_SOURCES} ${TARGET_${OS_NAME}_SOURCES})

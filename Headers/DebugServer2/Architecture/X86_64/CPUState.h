@@ -144,6 +144,44 @@ struct CPUState64 {
 
   uint64_t xcr0;
 
+  // AVX-512 opmask registers (K0-K7)
+  struct {
+    uint64_t k[8];            // K0-K7 opmask registers (64-bit each)
+  } avx512_opmask;
+
+  // MPX (Memory Protection Extensions) - deprecated but included
+  struct {
+    struct {
+      uint64_t lower_bound;
+      uint64_t upper_bound;
+    } bnd[4];                 // BND0-BND3 bounds registers
+    uint64_t bndcfgu;         // BND configuration register (user)
+    uint64_t bndstatus;       // BND status register
+  } mpx;
+
+  // AMX (Advanced Matrix Extensions) - Intel Sapphire Rapids+
+  struct {
+    uint8_t tilecfg[64];      // TILECFG - tile configuration (64 bytes)
+    uint8_t tmm[8][1024];     // TMM0-TMM7 tile registers (up to 1KB each)
+  } amx;
+
+  // CET (Control-flow Enforcement Technology)
+  struct {
+    uint64_t ssp;             // Shadow Stack Pointer
+    uint64_t pl0_ssp;         // PL0 Shadow Stack Pointer
+    uint64_t pl1_ssp;         // PL1 Shadow Stack Pointer
+    uint64_t pl2_ssp;         // PL2 Shadow Stack Pointer
+    uint64_t pl3_ssp;         // PL3 Shadow Stack Pointer
+    uint64_t interrupt_ssp_table; // Interrupt SSP Table
+  } cet;
+
+  // APX (Advanced Performance Extensions) - Intel Granite Rapids+
+  // Extended GPRs R16-R31
+  struct {
+    uint64_t r16, r17, r18, r19, r20, r21, r22, r23;
+    uint64_t r24, r25, r26, r27, r28, r29, r30, r31;
+  } apx_gpr;
+
 #if defined(OS_LINUX)
   struct {
     uint64_t orig_rax;
@@ -162,6 +200,11 @@ public:
     std::memset(&eavx, 0, sizeof(eavx));
     std::memset(&dr, 0, sizeof(dr));
     std::memset(&xcr0, 0, sizeof(xcr0));
+    std::memset(&avx512_opmask, 0, sizeof(avx512_opmask));
+    std::memset(&mpx, 0, sizeof(mpx));
+    std::memset(&amx, 0, sizeof(amx));
+    std::memset(&cet, 0, sizeof(cet));
+    std::memset(&apx_gpr, 0, sizeof(apx_gpr));
 #if defined(OS_LINUX)
     std::memset(&linux_gp, 0, sizeof(linux_gp));
 #endif

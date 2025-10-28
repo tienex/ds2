@@ -1,0 +1,11 @@
+{
+  "namespace" : "S390X",
+  "register-sets" : {
+    "gpr" : { "bit-size" : 64, "registers" : {
+      "r0" : {}, "r1" : {}, "r2" : {}, "r3" : {}, "r4" : {}, "r5" : {}, "r6" : {}, "r7" : {},
+      "r8" : {}, "r9" : {}, "r10" : {}, "r11" : {}, "r12" : {}, "r13" : {}, "r14" : {}, "r15" : {}
+    }},
+    "fpr" : { "bit-size" : 64, "encoding" : "ieee-double" }
+  },
+  "gdb-defs" : { "architecture" : "s390:64-bit" }
+}

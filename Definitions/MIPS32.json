@@ -228,6 +228,94 @@
                 "format"    : "hex",
                 "gdb-group" : "system"
             }
+        },
+
+        "dsp" : {
+            "*" : {
+                "bit-size"              : 64,
+                "encoding"              : "int",
+                "format"                : "hex",
+                "base-gdb-reg-number"   : 72
+            },
+
+            "ac0" : {
+                "alternate-name" : "dsp_acc0"
+            },
+            "ac1" : {
+                "alternate-name" : "dsp_acc1"
+            },
+            "ac2" : {
+                "alternate-name" : "dsp_acc2"
+            },
+            "ac3" : {
+                "alternate-name" : "dsp_acc3"
+            },
+
+            "dspctl" : {
+                "alternate-name"       : "dsp_control",
+                "bit-size"             : 32,
+                "gdb-reg-number"       : 76,
+                "gdb-group"            : "dsp"
+            }
+        },
+
+        "msa" : {
+            "*" : {
+                "bit-size"              : 128,
+                "encoding"              : "vector",
+                "format"                : "vector",
+                "base-gdb-reg-number"   : 80
+            },
+
+            "w0"  : { },
+            "w1"  : { },
+            "w2"  : { },
+            "w3"  : { },
+            "w4"  : { },
+            "w5"  : { },
+            "w6"  : { },
+            "w7"  : { },
+            "w8"  : { },
+            "w9"  : { },
+            "w10" : { },
+            "w11" : { },
+            "w12" : { },
+            "w13" : { },
+            "w14" : { },
+            "w15" : { },
+            "w16" : { },
+            "w17" : { },
+            "w18" : { },
+            "w19" : { },
+            "w20" : { },
+            "w21" : { },
+            "w22" : { },
+            "w23" : { },
+            "w24" : { },
+            "w25" : { },
+            "w26" : { },
+            "w27" : { },
+            "w28" : { },
+            "w29" : { },
+            "w30" : { },
+            "w31" : { },
+
+            "msa_csr" : {
+                "alternate-name"       : "msacsr",
+                "bit-size"             : 32,
+                "encoding"             : "int",
+                "format"               : "hex",
+                "gdb-reg-number"       : 112,
+                "gdb-group"            : "msa"
+            },
+            "msa_ir" : {
+                "alternate-name"       : "msair",
+                "bit-size"             : 32,
+                "encoding"             : "int",
+                "format"               : "hex",
+                "gdb-reg-number"       : 113,
+                "gdb-group"            : "msa"
+            }
         }
     },
 
@@ -261,6 +349,20 @@
                 "contents"   : [
                     "register-sets:linux"
                 ]
+            },
+            {
+                "filename"   : "mips-dsp.xml",
+                "identifier" : "org.gnu.gdb.mips.dsp",
+                "contents"   : [
+                    "register-sets:dsp"
+                ]
+            },
+            {
+                "filename"   : "mips-msa.xml",
+                "identifier" : "org.gnu.gdb.mips.msa",
+                "contents"   : [
+                    "register-sets:msa"
+                ]
             }
         ]
     },
@@ -277,6 +379,14 @@
         {
             "description" : "Floating Point Registers",
             "sets"        : [ "fpr" ]
+        },
+        {
+            "description" : "DSP Registers",
+            "sets"        : [ "dsp" ]
+        },
+        {
+            "description" : "MSA Registers",
+            "sets"        : [ "msa" ]
         }
     ]
 }

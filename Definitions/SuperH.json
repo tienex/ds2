@@ -1,0 +1,73 @@
+{
+  "name": "SuperH",
+  "description": "Renesas/Hitachi SuperH RISC Architecture (SH-1 through SH-4)",
+  "register_sets": [
+    {
+      "name": "General Purpose Registers",
+      "registers": [
+        {"name": "r0", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "r1", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "r2", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "r3", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "r4", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "r5", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "r6", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "r7", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "r8", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "r9", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "r10", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "r11", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "r12", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "r13", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "r14", "size": 4, "encoding": "uint32", "format": "hex", "altname": "fp"},
+        {"name": "r15", "size": 4, "encoding": "uint32", "format": "hex", "altname": "sp"},
+        {"name": "pc", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "pr", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "sr", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "gbr", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "mach", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "macl", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "vbr", "size": 4, "encoding": "uint32", "format": "hex"}
+      ]
+    },
+    {
+      "name": "Floating Point Registers (SH-4)",
+      "registers": [
+        {"name": "fr0", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "fr1", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "fr2", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "fr3", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "fr4", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "fr5", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "fr6", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "fr7", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "fr8", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "fr9", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "fr10", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "fr11", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "fr12", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "fr13", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "fr14", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "fr15", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "xf0", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "xf1", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "xf2", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "xf3", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "xf4", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "xf5", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "xf6", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "xf7", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "xf8", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "xf9", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "xf10", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "xf11", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "xf12", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "xf13", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "xf14", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "xf15", "size": 4, "encoding": "ieee754", "format": "float"},
+        {"name": "fpscr", "size": 4, "encoding": "uint32", "format": "hex"},
+        {"name": "fpul", "size": 4, "encoding": "uint32", "format": "hex"}
+      ]
+    }
+  ]
+}

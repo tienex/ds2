@@ -302,6 +302,85 @@
                 "invalidate-registers" : [ "x8", "x9", "x10", "x11", "x12", "x13", "x14" ],
                 "referencing-sets"     : [ "gpr" ]
             }
+        },
+
+        "fp-control" : {
+            "*" : {
+                "bit-size"       : 32,
+                "encoding"       : "int",
+                "format"         : "hex",
+                "gdb-group"      : "float",
+                "no-gdb-reg-number" : true
+            },
+
+            "fpsr" : {
+                "gdb-reg-number" : 34
+            },
+            "fpcr" : {
+                "gdb-reg-number" : 35
+            }
+        },
+
+        "sve-vector-regs" : {
+            "*" : {
+                "bit-size"              : 2048,
+                "encoding"              : "int",
+                "format"                : "vector",
+                "base-gdb-reg-number"   : 36,
+                "no-gdb-reg-number"     : true
+            },
+
+            "z0"  : { }, "z1"  : { }, "z2"  : { }, "z3"  : { },
+            "z4"  : { }, "z5"  : { }, "z6"  : { }, "z7"  : { },
+            "z8"  : { }, "z9"  : { }, "z10" : { }, "z11" : { },
+            "z12" : { }, "z13" : { }, "z14" : { }, "z15" : { },
+            "z16" : { }, "z17" : { }, "z18" : { }, "z19" : { },
+            "z20" : { }, "z21" : { }, "z22" : { }, "z23" : { },
+            "z24" : { }, "z25" : { }, "z26" : { }, "z27" : { },
+            "z28" : { }, "z29" : { }, "z30" : { }, "z31" : { }
+        },
+
+        "sve-predicate-regs" : {
+            "*" : {
+                "bit-size"              : 256,
+                "encoding"              : "int",
+                "format"                : "vector",
+                "base-gdb-reg-number"   : 68,
+                "no-gdb-reg-number"     : true
+            },
+
+            "p0"  : { }, "p1"  : { }, "p2"  : { }, "p3"  : { },
+            "p4"  : { }, "p5"  : { }, "p6"  : { }, "p7"  : { },
+            "p8"  : { }, "p9"  : { }, "p10" : { }, "p11" : { },
+            "p12" : { }, "p13" : { }, "p14" : { }, "p15" : { },
+            "ffr" : { "gdb-reg-number" : 84 }
+        },
+
+        "sve-control" : {
+            "vl" : {
+                "bit-size"       : 32,
+                "encoding"       : "int",
+                "format"         : "hex",
+                "gdb-group"      : "vector",
+                "gdb-reg-number" : 85
+            }
+        },
+
+        "system-regs" : {
+            "*" : {
+                "bit-size"       : 64,
+                "encoding"       : "int",
+                "format"         : "hex",
+                "gdb-group"      : "system",
+                "no-gdb-reg-number" : true
+            },
+
+            "tpidr_el0" : {
+                "gdb-reg-number" : 86
+            },
+            "tpidrro_el0" : {
+                "gdb-reg-number" : 87
+            }
         }
 
 //        "vfp-single" : {
@@ -745,20 +824,27 @@
                 "identifier" : "org.gnu.gdb.aarch64.core",
                 "contents"   : [
                     "register-sets:gpr",
-                    "register-sets:cpsr"
+                    "register-sets:cpsr",
+                    "register-sets:fp-control"
                 ]
-//            },
-//            {
-//                "indexed"    : false,
-//                "filename"   : "arm-vfpv3.xml",
-//                "identifier" : "org.gnu.gdb.arm.vfp",
-//                "contents"   : [
-//                    "register-sets:vfp-double",
-//                    "register-sets:fpscr"
-//                ]
-//            },
-//            {
-//                "identifier" : "org.gnu.gdb.arm.neon"
+            },
+            {
+                "indexed"    : false,
+                "filename"   : "aarch64-sve.xml",
+                "identifier" : "org.gnu.gdb.aarch64.sve",
+                "contents"   : [
+                    "register-sets:sve-vector-regs",
+                    "register-sets:sve-predicate-regs",
+                    "register-sets:sve-control"
+                ]
+            },
+            {
+                "indexed"    : false,
+                "filename"   : "aarch64-system.xml",
+                "identifier" : "org.gnu.gdb.aarch64.system",
+                "contents"   : [
+                    "register-sets:system-regs"
+                ]
             }
         ]
     },
@@ -766,11 +852,15 @@
     "lldb-defs" : [
         {
             "description" : "General Purpose Registers",
-            "sets"        : [ "gpr", "cpsr", "pseudo-gpr32" ]
-//        },
-//        {
-//            "description" : "VFP Registers",
-//            "sets"        : [ "vfp-single", "vfp-double", "vfp-quad", "fpscr" ]
+            "sets"        : [ "gpr", "cpsr", "pseudo-gpr32", "fp-control" ]
+        },
+        {
+            "description" : "SVE Registers",
+            "sets"        : [ "sve-vector-regs", "sve-predicate-regs", "sve-control" ]
+        },
+        {
+            "description" : "System Registers",
+            "sets"        : [ "system-regs" ]
         }
     ]
 }
